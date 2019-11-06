@@ -6,3 +6,5 @@ Course OpenStack:
 https://robusta.vn/vi/chuong-trinh-dao-tao/dien-toan-dam-may/openstack/cai-dat-cau-hinh-va-quan-tri-co-ban-openstack
 driver linux
 https://sites.google.com/site/embedded247/ddcourse/device-drivers-phan-1-co-ban-ve-driver-tren-linux
+Graphs
+https://www.giaithuatlaptrinh.com/?p=553
