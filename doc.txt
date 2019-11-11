@@ -8,3 +8,5 @@ driver linux
 https://sites.google.com/site/embedded247/ddcourse/device-drivers-phan-1-co-ban-ve-driver-tren-linux
 Graphs
 https://www.giaithuatlaptrinh.com/?p=553
+linux programming
+https://linux.die.net/lkmpg/c119.html
