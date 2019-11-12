@@ -1,1 +1,3 @@
 https://www.youtube.com/watch?v=0CGRkXIUM-o
+http://eslinuxprogramming.blogspot.com/2015/06/makefile-part-2.html
+http://eslinuxprogramming.blogspot.com/2015/04/cross-compiler.html
