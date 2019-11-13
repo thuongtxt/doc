@@ -1,15 +1,24 @@
 Heap algorithm
 https://www.giaithuatlaptrinh.com/?p=736
+
 Define Openstack
 https://github.com/hocchudong/thuctap032016/blob/master/ThaiPH/OpenStack/ThaiPH_baocaotimhieucacprojecttrongopenstack.md#swift
+
 Course OpenStack:
 https://robusta.vn/vi/chuong-trinh-dao-tao/dien-toan-dam-may/openstack/cai-dat-cau-hinh-va-quan-tri-co-ban-openstack
+
 driver linux
 https://sites.google.com/site/embedded247/ddcourse/device-drivers-phan-1-co-ban-ve-driver-tren-linux
+
 Graphs
 https://www.giaithuatlaptrinh.com/?p=553
+
 linux programming
 https://linux.die.net/lkmpg/c119.html
+
+linux kernel
+https://vimentor.com/vi/lesson/cac-phuong-phap-dong-bo-trong-kernel
+
 courses free
 alison.com
 ocw.mit.edu
