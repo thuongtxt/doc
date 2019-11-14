@@ -1,5 +1,0 @@
-git ls-tree -r master --name-only ~ get a list files in branch
-git branch -a: show all branches
-git branch -r: show all branches...
-git show-branch or git show-branch --all : show all branches commits
-git log --all --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
