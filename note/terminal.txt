@@ -1,0 +1,64 @@
+﻿ls - List
+mkdir - Make Directory: mkdir namefolder
+pwd
+cd
+rmdir - Remove Directory
+rm - Remove ~ remove all
+cp 'namefile' /directory/
+cp -r /directory ~ copy all file & folder 
+mv - Move
+cat - doc va in noi dung file
+tail – print TAIL ~ do va in 10 dong cuoi
+tail -n N (N so dong)
+less - print LESS ~ in noi dung file ra theo tung trang (Crtl + F va Crtl + B)
+grep: tim kiem noi dung cua file
+grep -i ~ tim kiem khong biet hoa thuong
+grep -r ~ tim kiem trong toan thu bo
+find -name tim kiem file theo . ~ find -iname khong phan biet hoa thuong
+tar
+
+ tar -cvf    tạo file nén (.tar) từ các file có sẵn. 
+
+ tar -tvf   xem nội dung file nén (.tar).  
+
+ tar -xvf   giải nén (file .tar).
+gzip
+
+ gzip   tạo file nén (.gz). Sử dụng  gzip -d   để giải nén (file .gz).
+unzip
+
+ unzip   giải nén một file nén (.zip). Sử dụng  unzip -l   để xem nội dung file zip mà không cần giải nén.
+whatis – What is this command
+
+ whatis   hiển thị mô tả về câu lệnh.
+man – Manual
+
+ man  ​ hiển thị trang hướng dẫn cho câu lệnh.
+who – Who Is logged in
+
+ who ​ hiển thị danh sách các tài khoản đang đăng nhập vào hệ thống.
+su – Switch User
+
+ su  ​ chuyển sang đăng nhập bằng một tài khoản khác.
+uname ​ hiển thị ra một số thông tin hệ thống như tên kernel, tên host, bộ xử lý, ...
+Bạn có thể dùng lệnh  uname -a ​ để hiển thị tất cả thông tin.
+free – Free memory
+
+ free ​ xem thông tin về bộ nhớ: bộ nhớ đã sử dụng, bộ nhớ còn trống trên hệ thống
+Bạn có thể dùng lệnh  free -m ​ để xem bộ nhớ với đơn vị KBs hoặc  free -g ​ để xem với đơn
+
+df ​ xem thông tin về dung lượng đĩa cứng (đã sử dụng, còn trống, ...) và các thiết bị lưu trữ khác.
+Bạn có thể dùng lệnh  df -h ​ để xem thông tin dưới dạng human readable (hiển thị với đơn vị KBs, GBs cho dễ đọc).
+
+ps – Processes
+
+ ps ​ hiển thị thông tin về các tiến trình đang chạy.
+
+top ​ hiển thị thông tin về các tiến trình đang chạy, sắp xếp theo hiệu suất CPU.
+Bạn cũng có thể dùng lệnh  top -u  ​ để xem thông tin các tiến trình đang chạy của tài khoản đó.
+
+ln ~ link
+
+ps aux | grep 'check' ~ check pid dang thuc hien cua 1 cai gi do
+
+dmesg | tail –f dể lưu những dòng cuối cùng của dmesg vào terminal của bạn
