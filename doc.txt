@@ -19,6 +19,9 @@ https://linux.die.net/lkmpg/c119.html
 linux kernel
 https://vimentor.com/vi/lesson/cac-phuong-phap-dong-bo-trong-kernel
 
+python
+https://drive.google.com/drive/folders/1GRl2Pip5FONy2MubZMkW5Tv520xeoG8_
+
 courses free
 alison.com
 ocw.mit.edu
