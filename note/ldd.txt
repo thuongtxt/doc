@@ -44,3 +44,33 @@ dead lock
 Read-copy update (RCU) - lock-free - con trỏ được cấp phát mới sử dụng được RCU
 - kernel control path không được sleep bên trong vùng khẩn cấp được bảo vệ bởi RCU
 
+Select from spin lock, semaphores, interrupt disabling
+
+“Cố gắng giữ khả năng thực hiện song song của hệ thống ở mức cao nhất có thể”
+
+
+Bảo vệ dữ liệu truy cập bởi exceptions.
+Bảo vệ dữ liệu truy cập bởi interupts.
+Bảo vệ dữ liệu truy cập bởi các hàm trì hoãn deferable functions.
+Bảo vệ dữ liệu cùng truy cập bởi exceptions và interrupts.
+Bảo vệ dữ liệu cùng truy cập bởi exceptions và hàm trì hoãn.
+Bảo vệ dữ liệu cùng truy cập bởi interrupts và hàm trì hoãn.
+Bảo vệ dữ liệu cùng bị truy cập bởi exception, interrupts và hàm trì hoãn.
+Quản lý bộ nhớ
+Bộ nhớ ảo
+mapping
+Vấn đề 1: Hệ thống có bộ nhớ vật lý ít hơn không gian địa chỉ của nó
+Vấn đề 2: Phân mảnh bộ nhớ chung.
+Vấn đề 3: Vấn đề nhiều chương trình trong hệ thống sử dụng chung bộ nhớ
+Vấn đề 4: Toàn bộ hệ thống có thể bị crash vì chỉ một chương trình chạy sai
+address translation
+page tables -> virtual address - physical address
+Page Table Entry – PTE
+Mỗi 1 words - 4 bytes sẽ có 1 PTE
+Hiệu quả: 1 PTE là 1 link cho 1 page
+Dung lượng của một page – page size là tùy thuộc vào từng hệ thống. Đa phần với hệ thống 32 bit chúng ta sử dụng page size bằng 4kB (1024 words trên mỗi page). 
+Một số hệ thống có thể sử dụng page size 2MB (524288 words trên một page).
+Với cách quản lý theo pages 4kB, làm thế nào hệ thống translate được một địa chỉ ảo cụ thể sang một địa chỉ vật lý?
+offset
+Chuyển đổi địa chỉ ảo sang địa chỉ vật lý – Address Translation
+page size 4kB
