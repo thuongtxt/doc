@@ -1,0 +1,76 @@
+﻿system call - exception <- User Mode
+interrupt context & 
+process context: ioclt, netlink
+softirqs va tasklet
+linux kernel - kernel thread
+workqueue - defered work -> worker threads -> events/n (number of CPU)
+Softirqs: Ít thực hiện tuần tự nhất.
+Tasklet: Giao diện sử dụng đơn giản, khả năng threaded ít hơn softirqs
+Work Queue: Giao diện sử dụng đơn giản nhất, ngữ cảnh tiến trình
+kernel preemption - (preemptive kernel & non - preemptive kernel) - planned process switch - force process switch
+Đồng bộ
+critical region - race condition
+Nguồn gây mất đồng bộ:
+ - Ngắt - interrupts
+ - softirps & tasklet
+ - kernel preemption
+ - sleeping
+ - hệ thống nhiều cpu
+Khi nào cần đồng bộ:
+    Dữ liệu có phải là dữ liệu toàn cục – global không, có xảy ra trường hợp nhiều luồng thực thi xử lý dữ liệu hay không?
+    Dữ liệu có phải được dùng chung giữa ngữ cảnh tiến trình và ngữ cảnh ngắt không, có được dùng chung giữa các hàm xử lý ngắt không?
+    Nếu một tiến trình bị forced process swich (buộc chuyển tiến trình) do kernel preemption trong khi đang truy cập dữ liệu, thì liệu tiến trình mới có sử dụng chung dữ liệu đó không?
+    Một đoạn mã nguồn, hay một hàm, có thể được thực ở hai CPU cùng lúc không?
+    …..
+Chú ý:
+
+Chúng ta cần đồng bộ dữ liệu, chứ không phải mã nguồn. Vì vậy các phương pháp đồng bộ sẽ dùng để bảo vệ dữ liệu, chứ không phải mã nguồn.
+
+Per-CPU Variables: dữ liệu riêng cho từng CPU
+tĩnh -> DEFINE_PER_CPU(type, name)
+động -> __alloc_percpu
+per_cpu & per_cpu_ptr
+
+atomic operations:atomic_t
+spin locks: tương tự khóa cửa wc - spinlock_t -> error deadlock
+trong hàm spin_lock() thì hàm preempt_disable sẽ được gọi
+Read/Write spin locks: rwlock_t có gán nhãn R W (DEFINE_RWLOCK)
+Semaphores: sleeping lock - ngủ trong khi chờ bằng cách ghi danh - rw_semaphores
+local interrupt disabling
+
+deferable functions disabling & enabling
+dead lock
+
+Read-copy update (RCU) - lock-free - con trỏ được cấp phát mới sử dụng được RCU
+- kernel control path không được sleep bên trong vùng khẩn cấp được bảo vệ bởi RCU
+
+Select from spin lock, semaphores, interrupt disabling
+
+“Cố gắng giữ khả năng thực hiện song song của hệ thống ở mức cao nhất có thể”
+
+
+Bảo vệ dữ liệu truy cập bởi exceptions.
+Bảo vệ dữ liệu truy cập bởi interupts.
+Bảo vệ dữ liệu truy cập bởi các hàm trì hoãn deferable functions.
+Bảo vệ dữ liệu cùng truy cập bởi exceptions và interrupts.
+Bảo vệ dữ liệu cùng truy cập bởi exceptions và hàm trì hoãn.
+Bảo vệ dữ liệu cùng truy cập bởi interrupts và hàm trì hoãn.
+Bảo vệ dữ liệu cùng bị truy cập bởi exception, interrupts và hàm trì hoãn.
+Quản lý bộ nhớ
+Bộ nhớ ảo
+mapping
+Vấn đề 1: Hệ thống có bộ nhớ vật lý ít hơn không gian địa chỉ của nó
+Vấn đề 2: Phân mảnh bộ nhớ chung.
+Vấn đề 3: Vấn đề nhiều chương trình trong hệ thống sử dụng chung bộ nhớ
+Vấn đề 4: Toàn bộ hệ thống có thể bị crash vì chỉ một chương trình chạy sai
+address translation
+page tables -> virtual address - physical address
+Page Table Entry – PTE
+Mỗi 1 words - 4 bytes sẽ có 1 PTE
+Hiệu quả: 1 PTE là 1 link cho 1 page
+Dung lượng của một page – page size là tùy thuộc vào từng hệ thống. Đa phần với hệ thống 32 bit chúng ta sử dụng page size bằng 4kB (1024 words trên mỗi page). 
+Một số hệ thống có thể sử dụng page size 2MB (524288 words trên một page).
+Với cách quản lý theo pages 4kB, làm thế nào hệ thống translate được một địa chỉ ảo cụ thể sang một địa chỉ vật lý?
+offset
+Chuyển đổi địa chỉ ảo sang địa chỉ vật lý – Address Translation
+page size 4kB
