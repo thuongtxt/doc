@@ -33,3 +33,16 @@ mayuko
 
 documents text
 https://sourceforge.net/projects/openofficeorg.mirror/files/4.1.7/binaries/en-US/Apache_OpenOffice_4.1.7_Win_x86_install_en-US.exe/download
+
+knowlegde
+https://github.com/hocchudong
+
+General Open Vswitch
+https://github.com/hocchudong/thuctap012017/blob/master/TamNT/Virtualization/docs/Virtual_Switch/2.Tim_hieu_Open_Vswitch.md
+
+Website learn of cloud computing
+https://news.cloud365.vn/
+https://hocchudong.com
+
+trainning linux embedded
+https://github.com/phuthodien/training_linux_embedded
