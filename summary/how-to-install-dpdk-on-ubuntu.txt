@@ -1,0 +1,67 @@
+# If you're looking into the C10M problem (10 million concurrent connections)
+# you might want to play with DPDK (Originally proprietry Intel, now open source)
+#
+# C10M: http://c10m.robertgraham.com/
+# DPDK: http://dpdk.org/
+#
+# This is a quick summary how to install dpdk on ubuntu
+# running inside virtualbox on a mac
+
+# On my Mac:
+vagrant init ubuntu
+
+# Edit the Vagrantfile to add a second network adaptor
+# (necessary because DPDK takes over the entire adaptor (and confusingly refers to it as a "port"),
+# so your ssh breaks if you use the primary adaptor)
+config.vm.network :private_network, ip: "10.0.0.10"
+
+vagrant up
+vagrant ssh
+
+# Install dependencies
+sudo apt-get update
+sudo apt-get install git build-essential linux-headers-`uname -r`
+
+# Get code
+git clone http://dpdk.org/git/dpdk
+
+# Build code
+cd dpdk
+make config T=x86_64-default-linuxapp-gcc
+make
+
+# Install kernel modules
+sudo modprobe uio
+sudo insmod build/kmod/igb_uio.ko
+
+# Configure hugepages
+echo 1024 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+sudo mkdir /mnt/huge
+sudo mount -t hugetlbfs nodev /mnt/huge
+
+# Bind secondary network adaptor
+sudo ifconfig eth1 down
+sudo ./tools/pci_unbind.py --bind=igb_uio eth1
+
+# I needed to do this to make the examples compile, not sure why.
+export RTE_SDK=/home/vagrant/dpdk
+ln -s $RTE_SDK/build $RTE_SDK/x86_64-default-linuxapp-gcc
+
+# Go wild! You have a low-latency user-space network stack!
+
+
+
+
+Hi,
+as Thomas said that is a dep for pcap.
+Note that dpdk is part of Ubuntu 15.10 and later - due to that even if
+building on your own on these releases you would be able to run "sudo
+apt-get build-dep dpdk" to get all usual build dependencies resolved
+automatically.
+
+But since you are on an older release you can just do what this woudl do
+for you which would be (including pcap enabled and all kind of docu
+building things) :
+sudo apt-get install doxygen graphviz inkscape libcap-dev libpcap-dev
+libxen-dev libxenstore3.0 python python-sphinx texlive-fonts-recommended
+texlive-latex-extra
