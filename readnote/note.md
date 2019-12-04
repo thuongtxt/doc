@@ -6,6 +6,9 @@
 - [1.2  Huge page](#1.2)
 - [1.3  NUMA](#1.3)
 - [1.4 SR-IOV](#1.4)
+
+[2. Tìm hiểu về memory và slab trong linux kernel](#2)
+
 <a name = '1'></a>
 ## 1.   CÁC KỸ THUẬT VỀ ẢO HÓA 
 <a name='1.1'></a>
@@ -67,3 +70,51 @@ Trong giải pháp SR-IOV, khái niệm VF (Virtual Function) được xuất hi
 ## 2.   Tìm hiểu tổ chức memory và slab trong linux kernel
 Trong linux, memory được tổ chức thành các page chừng 4KB, tùy vào dòng CPU, hệ điều hành mà con số này có thể thay đổi, có thể lên đến 8KB hay 16KB một page. Trong khi CPU có thể thao tác đến từng byte, từng word nhưng đơn vị quản lý memory là page.
 
+Có thể xem page size qua getconf PAGE_SIZE
+
+Mỗi page memory có một page description, đây là một data structure mô tả về page đó, data structure này chừng 40 bytes. Nó chiếm một tỉ lệ rất nhỏ trong toàn bộ bộ nhớ. Page description sẽ mô tả trạng thái của page: lock hay dirty, số tham chiếu đến page cho biết page đang được sử dụng hay không, virtual address của physical page này.
+
+Toàn bộ memory lại được chia thành các khu vực khác nhau phục vụ cho các mục đích khác nhau. Thông thường có 4 zone:
+zone DMA: zone này chừng dưới 16M, là vùng bộ nhớ dành riêng cho DMA - Direct Memory Access. DMA có nghĩa là các device ngoại vi có thể truy cập trực tiếp vào memory qua một chip nhớ riêng mà không cần qua CPU. Tuy vậy CPU vẫn cần biết khu vực nào dành cho DMA để quy hoạch không chạm vào.
+zone DMA32: zone này chừng nhỏ hơn 4G, là vùng bộ nhớ cũng cho DMA nhưng dành cho các 32 bits device.
+Trên kiến trúc x86_64 có cả hai loại zone DMA và DMA32
+zone NORMAL: Đây là vùng bộ nhớ thông thường.
+zone HIGHMEM: Không rõ nó để làm gì.
+
+Xem trong dmesg có thể thấy các thông tin về các zone này:
+On node 0 totalpages: 8363847
+DMA zone: 56 pages used for memmap
+DMA zone: 104 pages reserved
+DMA zone: 3835 pages, LIFO batch:0
+DMA32 zone: 14280 pages used for memmap
+DMA32 zone: 481252 pages, LIFO batch:31
+Normal zone: 107520 pages used for memmap
+Normal zone: 7756800 pages, LIFO batch:31
+On node 1 totalpages: 8388608
+Normal zone: 114688 pages used for memmap
+Normal zone: 8273920 pages, LIFO batch:31
+
+Mỗi page có chừng 4 KB, căn cứ số page có thể tính ra tổng số memory.
+Ở trên có thể thấy kiến trúc CPU là kiểu NUMA, memory được chia ra quản lý bởi từng node. Mỗi node ứng với một CPU. Trong kiến trúc NUMA, CPU bên node0 vẫn có thể dùng memory trên node1 qua một internal link. Đối lập với NUMA là SMP - kiểu kiến trúc truyền thống, mọi CPU có toàn quyền access đến tất cả memory.
+
+Ở trên có nhắc đến page descriptor, một loại data structure trong linux, nói chung data structure trong linux có nhiều loại và để nâng cao performance, linux có thực hiện một cơ chế để cache lại các data structure này. Cơ chế này được thực hiện bởi slab allocator. Hệ thống sẽ dành riêng một khu vực physical memory cho slab. Cấu tạo của slab layer được chia thành từng cache. Một cache là một tập hợp các data structure có cùng loại, chúng ta có cache cho inode và dentry, cache cho process descriptor... Mỗi cache gồm nhiều slab. Mỗi slab tương ứng với một hay nhiều physical memory liên tiếp nhau, mỗi slab lại gồm nhiều object, mỗi object sẽ được nạp một data structure, có thể coi một object tương ứng với một data structure. Slab có ba loại: full, empty, partial. Full nghĩa là slab đó toàn các object, partial nghĩa là nó có chứa một lượng object, empty là hoàn toàn chẳng có object nào. Slab allocator sẽ cấp phát object từ các slab cache. Nếu nhận một yêu cầu cần một instance, slab allocator sẽ xem có object nào trong slab thỏa mãn không, nếu có thì trả về luôn, nếu không, nó tạo một object mới trong slab, bắt đầu từ các partial slab, nếu không có partial slab, nó tạo trong empty slab, nếu cũng không có empty slab, nó tạo thêm một empty slab để tạo object trong đó. Hiển nhiên, nó không thể dùng full slab để tạo object được vì không còn chỗ nữa. Sau khi object này dùng xong, nó sẽ không được deallocate đi mà được đặt vào trong slab để tái sử dụng.
+
+Mục đích của slab cache:
+
+Cấp phát sẵn một continous physical memory dành cho data structure giảm hành vì allocate và deallocate memory, hạn chế phân mảnh memory sinh ra trong quá trình này.
+Về mặt bản chất, cache là vùng data chứa các data đã được qua xử lý, process có thể dùng được luôn thay vì tái xử lý lại từ raw data. Có thể thấy từ đó mà có nhiều cache ở nhiều tầng khác nhau, slab cache, CPU cache…
+
+Bản thân mỗi slab cũng có data structure gọi là slab descriptor, slab descriptor có thể nằm trong slab hoặc nằm ngoài slab, trong một general cache.
+
+Có thể xem lượng slab qua:
+slabtop
+less /proc/slabinfo
+less /proc/meminfo
+atop
+
+Thường lượng slab khá thấp chừng vài trăm MB, nếu quá nhiều đến hàng GB thì đó là vấn đề. Có một cách giải phóng lượng slab
+echo 2 > /proc/sys/vm/drop_caches
+inode và dentries object sẽ được xóa khỏi slab cache.
+
+Inode là metadata của file
+Dentry là các component của một path + file name, ví dụ file /usr/bin/test sẽ tạo ra 4 dentries: /, usr, bin và test.

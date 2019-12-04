@@ -138,3 +138,11 @@
   #####################
   $ htop
 ```
+
+
+vncserver -localhost no -geometry 1900x1000
+
+./usertools/dpdk-devbind.py -s show device using
+./usertools/cpu_layout.py show list sockets
+sudo ./build/app/testpmd --file-prefix "abc" -w dev_add -l 12,13,14 -n 4 -- -i
+cat /sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages read file hugepage
