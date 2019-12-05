@@ -34,7 +34,12 @@ $ ./build/app/helloworld --help
 $ sudo ./build/app/helloworld --file-prefix thuong -l 0-4 
 ```
 ## 2. Config & build app Testpmd
+Chức năng của Testpmd:
+- 2 mô hình sử dụng
 
+    !['step-1'](images/step-1-external-traffic.png)
+
+    !['step-2'](images/setup-2-testpmd.png)
 
 ```python
 $ cd ~/dpdk
@@ -49,7 +54,7 @@ $ make -j8
 # Cài đặt
 $ make install T=$RTE_TARGET DESTDIR=install -j8
 # Run app testpmd trên 2 card 0000:04:00.0 và 0000:04:00.1
-$ sudo ./build/app/testpmd --file-prefix "thuong" -w 0000:04:00.0 -w 0000:04:00.1 -l 12,13,14 n 4  -- -i
+$ sudo ./build/app/testpmd --file-prefix "thuong" -w 0000:04:00.0 -w 0000:04:00.1 -l 12,13,14 -n 4  -- -i
 ```
 - Bắt đầu testpmd
 ```
@@ -94,13 +99,7 @@ Logical Core 4 (socket 0) forwards packets on 2 streams:
   RX P=0/Q=0 (socket 0) -> TX P=1/Q=0 (socket 0) peer=02:00:00:00:00:01
   RX P=1/Q=0 (socket 0) -> TX P=0/Q=0 (socket 0) peer=02:00:00:00:00:00
 ```
-- Bắt đầu gửi packets
-    - 2 mô hình sử dụng
-
-    !['step-1'](images/step-1-external-traffic.png)
-
-    !['step-2'](images/setup-2-testpmd.png)
-
+- Bắt đầu gửi packets   
 
 - Show quá trình gửi packet
 ```
@@ -156,5 +155,3 @@ Waiting for lcores to finish...
 
 Done.
 ```
-
--
