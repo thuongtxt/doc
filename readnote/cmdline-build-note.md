@@ -35,7 +35,7 @@ $ sudo ./build/app/helloworld --file-prefix thuong -l 0-4
 ```
 ## 2. Config & build app Testpmd
 Chức năng của Testpmd:
-- 2 mô hình sử dụng
+- Hai mô hình sử dụng
 
     !['step-1'](images/step-1-external-traffic.png)
 
@@ -107,7 +107,8 @@ show port stats all
 ```
 
 - Kết quả
-```
+```python
+# Packets được gửi từ Port B của Traffic Generator, Port 1 nhận packets (RX) và chuyển tiếp packets qua Port 0, packets từ Port 0 truyền đi (TX) qua Port A.
   ######################## NIC statistics for port 0  ########################
   RX-packets: 0          RX-missed: 0          RX-bytes:  0
   RX-errors: 0
