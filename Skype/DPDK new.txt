@@ -1,0 +1,36 @@
+fpga_accel_atbay: git checkout develop
+fpga_accel_dpdk: git checkout arrive_dpdk/feature/ipsec_ip_fragment_and_replay
+
+export RTE_SDK=/home/scratch/minhnv/fpga_accel_dpdk
+export ATBAY=/home/scratch/minhnv/fpga_accel_atbay
+export RTE_TARGET=x86_64-native-linuxapp-gcc
+export DPDK_INSTALLED_DIR=/home/scratch/minhnv/arrive_dpdk_installed_dir
+
+
+make -C $ATBAY EXTRA_CFLAGS="-g3 -O0"
+
+cd $RTE_SDK
+make config T=$RTE_TARGET
+make clean
+make install T=$RTE_TARGET DESTDIR=$DPDK_INSTALLED_DIR EXTRA_CFLAGS="-fPIC -g3 -O0" -j 10
+
+
+
+make -C ./examples/ip_fragmentation_replay/ EXTRA_CFLAGS="-g3 -O0"
+
+
+sudo modprobe uio
+sudo insmod /home/scratch/minhnv/fpga_accel_dpdk/x86_64-native-linuxapp-gcc/kmod/igb_uio.ko
+/home/scratch/minhnv/fpga_accel_dpdk/usertools/dpdk-devbind.py --bind=igb_uio 81:00.0 81:00.1
+
+./examples/ip_fragmentation_replay/build/ip_fragmentation_replay -l 18-19 -n 4 --socket-mem=4096,4096 --proc-type auto -w 81:00.0 -w 81:00.1 -- -p 3 -f ./examples/ip_fragmentation_replay/route.cfg
+
+
+
+make -C ./examples/ipsec-secgw/ EXTRA_CFLAGS="-g3 -O0"
+./examples/ipsec-secgw/build/ipsec-secgw -l 18-19 -n 4 --socket-mem=4096,4096 --proc-type auto -w 81:00.0 -w 81:00.1 --vdev "crypto_aesni_mb" -- -p 3 -P 3 --config="(0,0,18),(0,1,18)" -f ./examples/ipsec-secgw/ep0.cfg
+
+
+
+
+./examples/ipsec-secgw/build/ipsec-secgw -l 18-19 -n 4 --socket-mem=4096,4096 --proc-type auto -w 81:00.0 -w 81:00.1 -- -p 3 -P 3 --config="(0,0,18),(1,0,18),(0,1,19),(1,1,19)" -f ./examples/ipsec-secgw/ep0.cfg
