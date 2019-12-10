@@ -1,0 +1,53 @@
+Build Bay DPDK
+====================
+
+fpga_accel_atbay: git checkout develop
+fpga_accel_dpdk: git checkout -b arrive_dpdk/feature/ipsec_ip_fragment_and_replay_cmdline
+
+export RTE_SDK=/home/scratch/minhnv/fpga_accel_dpdk
+export ATBAY=/home/scratch/minhnv/fpga_accel_atbay
+export RTE_TARGET=x86_64-native-linuxapp-gcc
+export DPDK_INSTALLED_DIR=/home/scratch/minhnv/arrive_dpdk_installed_dir
+
+Compile atbay and DPDK debug mode
+-----------------------------------------------------
+make -C $ATBAY EXTRA_CFLAGS="-g3 -O0"
+
+cd $RTE_SDK
+make config T=$RTE_TARGET
+make clean
+make install T=$RTE_TARGET DESTDIR=$DPDK_INSTALLED_DIR EXTRA_CFLAGS="-fPIC -g3 -O0" -j 10
+
+Compile IP fragmentation example app
+==============================
+
+debug mode
+-----------------
+make -C ./examples/cmdline/ EXTRA_CFLAGS="-g3 -O0"
+
+
+Run DPDK example app
+====================
+sudo modprobe uio
+sudo insmod /home/scratch/minhnv/fpga_accel_dpdk/x86_64-native-linuxapp-gcc/kmod/igb_uio.ko
+/home/scratch/minhnv/fpga_accel_dpdk/usertools/dpdk-devbind.py --bind=igb_uio 81:00.0 81:00.1
+
+./examples/cmdline/build/cmdline -l 18-19 -n 4 --socket-mem=4096,4096 --proc-type auto -w 81:00.0 -w 81:00.1 --file-prefix minhnv -- -p 3 -f ./examples/cmdline/route.cfg
+
+
+
+
+
+
+make -C $ATBAY EXTRA_CFLAGS="-g3 -O0"
+
+cd $RTE_SDK
+make config T=$RTE_TARGET
+make clean
+make install T=$RTE_TARGET DESTDIR=$DPDK_INSTALLED_DIR EXTRA_CFLAGS="-fPIC -g3 -O0" -j 10
+make -C ./examples/cmdline/ EXTRA_CFLAGS="-g3 -O0"
+./examples/cmdline/build/cmdline --master-lcore 17 -l 18-19 -n 4 --socket-mem=4096,4096 --proc-type auto -w 81:00.0 -w 81:00.1 --file-prefix minhnv -- -p 3 -f ./examples/cmdline/route.cfg
+
+
+
+--pfc "RX PORT, TX PORT, RX LCORE, WT LCORE"
