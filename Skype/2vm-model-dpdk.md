@@ -11,8 +11,14 @@ mount -t hugetlbfs nodev /mnt/huge
 echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
 grep "Hugepagesize:" /proc/meminfo
 
-modprobe uio
-insmod ./x86_64-native-linux-gcc/kmod/igb_uio.ko
+sudo modprobe uio
+sudo insmod ./x86_64-native-linuxapp-gcc/kmod/igb_uio.ko
+
+sudo ./usertools/dpdk-devbind.py -b igb_uio 0000:00:04.0
+sudo ./usertools/dpdk-devbind.py -b igb_uio 0000:00:05.0
+./usertools/dpdk-devbind.py -s
+
+sudo ./x86_64-native-linuxapp-gcc/app/testpmd -l 0-3 -n 4 --master-lcore=0 --file-prefix p1  -w 0000:00:04.0 -w 0000:00:05.0  -- -i --nb-cores=3 --rxq=1 --txq=0 --rss-ip
 
 ./usertools/dpdk-devbind.py --bind igb_uio 0000:00:04.0 0000:00:05.0
 sudo ./build/app/testpmd --file-prefix "thuongtxt" -w 0000:00:04.0 -w 0000:00:05.0 -l 1,2,3 -n 4  -- -i
@@ -86,7 +92,7 @@ No 'Misc (rawdev)' devices detected
 cd ${WD}/pktgen-dpdk
 make
 
-
+sudo -E ./app/x86_64-native-linuxapp-gcc/pktgen -l 0-3 -n 4 --proc-type auto --log-level 7 --file-prefix pg -- -T -P -m [1:2].0 -m [3:3].1 -f themes/black-yellow.theme 
 
 
 ```
@@ -121,4 +127,23 @@ Port  1: Link Down <Enable promiscuous mode>
 
 
 
+```
+
+```
+port stop all
+port config 0 dcb vt off 4 pfc off
+port config 1 dcb vt off 4 pfc off
+port start all
+set fwd rxonly
+set verbose 1
+start
+```
+```
+enable 0 vlan 
+set 0 dst mac 3c:fd:fe:ad:84:14
+set 0 src mac 00:02:00:00:00:00
+set 0 type vlan
+set 0 count 10
+set 0 vlan 577
+start 0
 ```

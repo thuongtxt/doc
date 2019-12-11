@@ -8,3 +8,6 @@ pass: 123456
 
 
 ssh linux@127.0.0.1 -p 5559
+ln -s /home/jake/doc/test/2000/something /home/jake/xxx
+
+sudo tshark
