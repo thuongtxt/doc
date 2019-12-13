@@ -57,26 +57,3 @@ sudo ovs-ofctl dump-flows ovs-dpdk-br0
 sudo ovs-ofctl del-flows ovs-dpdk-br0 cookie=0x11/-1
 sudo ovs-ofctl add-flow ovs-dpdk-br0 cookie=0x11,in_port="ovs-br0-vport1",actions=set_queue:8,output:normal
 
-
-sudo ovs-ofctl add-flow ovs-dpdk-br0 cookie=0x14,in_port="ovs-br0-vport1",actions=set_queue:4,output:ovs-br0-vport2
-
-
-sudo ovs-vsctl set port ovs-br0-vport2 qos=@newqos -- \
---id=@newqos create qos type=egress-hqos2l-policer other-config:cir=4096 other-config:cbs=2048 other-config:pir=10240 other-config:pbs=2048 other-config:ydropt=true \
-qos=@qospl11,@qospl12,@qospl13,@qospl14 -- \
---id=@qospl11 create qos type=egress-policer-rfc2698 other-config:cir=1024 other-config:cbs=2048 other-config:pir=10240 other-config:pbs=2048 other-config:ydropt=true \
-queues:1=@queue1 -- \
---id=@qospl12 create qos type=egress-policer-rfc2698 other-config:cir=2048 other-config:cbs=2048 other-config:pir=10240 other-config:pbs=2048 other-config:ydropt=true \
-queues:2=@queue2 -- \
---id=@qospl13 create qos type=egress-policer-rfc2698 other-config:cir=4096 other-config:cbs=2048 other-config:pir=10240 other-config:pbs=2048 other-config:ydropt=true \
-queues:4=@queue4 -- \
---id=@qospl14 create qos type=egress-policer-rfc2698 other-config:cir=8192 other-config:cbs=2048 other-config:pir=10240 other-config:pbs=2048 other-config:ydropt=true \
-queues:8=@queue8 -- \
---id=@queue1 create queue other-config:desc=rfu -- \
---id=@queue2 create queue other-config:desc=rfu -- \
---id=@queue4 create queue other-config:desc=rfu -- \
---id=@queue8 create queue other-config:desc=rfu
-
-sudo ovs-ofctl add-flow ovs-dpdk-br0 cookie=0x14,in_port="ovs-br0-vport1",actions=set_queue:4,output:ovs-br0-vport2
-sudo ovs-ofctl add-flow ovs-dpdk-br0 cookie=0x15,in_port="ovs-br0-vport3",actions=set_queue:2,output:ovs-br0-vport2
-sudo ovs-appctl -t ovs-vswitchd qos/show ovs-br0-vport2
