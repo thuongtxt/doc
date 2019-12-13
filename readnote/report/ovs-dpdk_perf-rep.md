@@ -16,7 +16,7 @@
 
 ## Test Model
 
-images
+!['Model Test'](images/model-test.png)
 
 ## Test Environment
 
@@ -25,12 +25,12 @@ images
 |   Item    |   Description     ||
 | ----------|-----------------  |
 |   Server Platform     |   Asus Z10PE-D8 WS       |
-|   CPU                 |   Intel(R) Xeon(R) CPU E5-2678 v3 @ 2.50GHz https://ark.intel.com/content/www/us/en/ark/products/81908/intel-xeon-processor-e5-2680-v3-30m-cache-2-50-ghz.html Number of cores: 48, Number of Threads:    |
+|   CPU                 |   Intel(R) Xeon(R) CPU E5-2678 v3 @ 2.50GHz <br> https://ark.intel.com/content/www/us/en/ark/products/81908/intel-xeon-processor-e5-2680-v3-30m-cache-2-50-ghz.html <br> Number of cores: 48, Number of Threads:    |
 |   Memory              |   Total  256GiB RIMM DDR4 Synchronous over 8 channels 2400 MHz  (0.4 ns)  |
 |   PCIe                |   |
-|   NICs                |   Intel Corporation Ethernet Controller X710 for 10GbE SFP+ (4 x 10GbE) 
-Chelsio Communications Inc T62100-CR Unified Wire Ethernet Controller (5 x 40/50/100Gb Ethernet) 
-Intel Corporation I210 Gigabit Netwo4.15.0-63-genericrk Connection (2 x 1GbE) |
+|   NICs                |   Intel (R) Ethernet Controller X710 for 10GbE SFP+ (4 x 10GbE) <br>
+Chelsio Communications Inc T62100-CR Unified Wire Ethernet Controller (5 x 40/50/100Gb Ethernet) <br>
+Intel (R) I210 Gigabit Network 4.15.0-63-genericrk Connection (2 x 1GbE) |
 |   Operating System    |   Ubuntu 18.04.3 LTS  |
 |   BIOS                |   12/18/2015 American Megatrends Inc. 3204    |
 |   Microcode           |   0x43    |
@@ -41,11 +41,41 @@ Intel Corporation I210 Gigabit Netwo4.15.0-63-genericrk Connection (2 x 1GbE) |
 ### Boot and BIOS settings
 |   Item                |   Description     ||
 |--------------------   |-------------------|
-|   BIOS Setting        |   default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on
+|   BIOS Setting        |   ___default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on
 iommu=pt isolcpus=1-21,28-48 nohz_full=1-21,28-48 rcu_nocbs=1-
-21,28-48 <br>
+21,28-48___ <br>
 Note: nohz_full and rcu_nocbs is to disable Linux* kernel interrupts, and it’s important
 for zero-packet loss test. Generally, 1G huge pages are used for performance test.   |
+|   BIOS                |   CPU Power and Performance Policy (Performance) <br> CPU C-state Disabled <br>
+CPU P-state Disabled <br>
+Enhanced Intel® Speedstep® Tech Disabled <br> Turbo Boost Disabled<br>
+Intel VT Fordirected I/O(VT-d) Enable<br>
+Intel Virtualization Technology (VT-x) Enable   |
+|  DPDK Setting         |   Build Testpmd   |
+
+|   Item                |   Description     ||
+|---------------------  |   ------------    |
+|   Test case           |   RFC2544 zero packet loss test on Intel (R) Ethernet Controller X710 for 10GbE (1GbE x 2)     |
+|   NIC                 |   Intel(R) Ethernet Controller X710 for 10GbE     |
+|   Driver              |   i40e DPDK PMD (base on igb_uio)    |
+|   Device ID           |     8086:1572      |
+|   Device Driver/<br>      Driver version: 2.9.21 <br>
+Firmware                |   firmware-version: 7.10  xxx 11.2019  |
+|   Test configuration  |   
+|   Command line        |   sudo ./build/app/testpmd --file-prefix "thuongtxt" -w 0000:04:00.0 -w 0000:04:00.1 -l 12,13,14 -n 4  -- -i
+
+## Test Result
+
+|   Packet Size(Bytes)  |   Throughput(Mpps)    |   Line rate%   ||
+|   -----------------   |   ----------------    |   ----------   |
+|   64                  |   14.85               |   |
+|   128                 |   8.41                |   |
+|   256                 |   4.51                |   |
+|   512                 |   2.34                |   |
+
+
+## Figure3: RFC2544 zero packet loss test on Intel® Ethernet Converged Network Adapter X710-DA4 
+!["Chart"](images/chart.png)
 ## References
 
 *All external references goes here.* 
