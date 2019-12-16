@@ -23,8 +23,8 @@ make install T=x86_64-native-linuxapp-gcc DESTDIR=$RTE_SDK/sdk -j
 ```
 cd ${WD}
 git clone http://dpdk.org/git/apps/pktgen-dpdk
-cd ${WD}/pktgen-dpdk
 git checkout pktgen-3.6.6
+cd ${WD}/pktgen-dpdk
 
 ```
 
