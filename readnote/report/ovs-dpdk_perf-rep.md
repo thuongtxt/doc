@@ -6,14 +6,21 @@
 | -------- | ----         | ----            | ----            |
 |    1.0   | Dec 12, 2019 | Thuong Tran     | Initial version |
 
-## Overview 
-
-*Overview/introduction of your document.* 
 
 ## Test Setup
+* The device under test (DUT) consists of a system with an Intel® architecture motherboard populated with the following:
+    * A single or dual processor and PCH chip, except for System on Chip (SoC) cases
+    * DRAM memory size and frequency (normally single DIMM per channel)
+    * Specific Intel Network Interface Cards (NICs)
+    * BIOS settings noting those that updated from the basic settings
+    * DPDK build configuration settings, and commands used for tests
+* Connected to the DUT is an STC (Sprient Test Center), a hardware test and simulation platform to generate packet traffic to the DUT ports and determine the throughput at the tester side. The STC is used to implement RFC2544 on the DUT.
 
-
-
+* DPDK Testpmd Test Case: Documentation may be found at
+http://www.dpdk.org/doc/guides/testpmd_app_ug/index.html.
+* The testpmd application can be used to test the DPDK in a packet forwarding mode and also to access
+NIC hardware features. Note in the Testpmd example if the –i argument is used, the first core is used for
+the command language interface (CLI).
 ## Test Model
 
 !['Model Test'](images/model-test.png)
@@ -77,8 +84,7 @@ Firmware                |   firmware-version: 7.10  xxx 11.2019  |
 ## Figure3: RFC2544 zero packet loss test on Intel® Ethernet Converged Network Adapter X710-DA4 
 !["Chart"](images/chart.png)
 ## References
-
-*All external references goes here.* 
+___[1]___ https://fast.dpdk.org/doc/perf/DPDK_19_08_Intel_NIC_performance_report.pdf
 
 ## About Arrive 
 
