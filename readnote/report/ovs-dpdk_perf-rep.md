@@ -23,7 +23,7 @@ NIC hardware features. Note in the Testpmd example if the –i argument is used,
 the command language interface (CLI).
 ## Test Model
 
-![Model Test](images/Test-model.png)
+![Model Test](images/test-model.png)
 
 ## Test Environment
 
