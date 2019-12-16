@@ -35,9 +35,7 @@ the command language interface (CLI).
 |   CPU                 |   Intel(R) Xeon(R) CPU E5-2678 v3 @ 2.50GHz <br> https://ark.intel.com/content/www/us/en/ark/products/81908/intel-xeon-processor-e5-2680-v3-30m-cache-2-50-ghz.html <br> Number of cores: 48, Number of Threads:    |
 |   Memory              |   Total  256GiB RIMM DDR4 Synchronous over 8 channels 2400 MHz  (0.4 ns)  |
 |   PCIe                |   |
-|   NICs                |   Intel (R) Ethernet Controller X710 for 10GbE SFP+ (4 x 10GbE) <br>
-Chelsio Communications Inc T62100-CR Unified Wire Ethernet Controller (5 x 40/50/100Gb Ethernet) <br>
-Intel (R) I210 Gigabit Network 4.15.0-63-genericrk Connection (2 x 1GbE) |
+|   NICs                |   Intel (R) Ethernet Controller X710 for 10GbE SFP+ (4 x 10GbE) <br> Chelsio Communications Inc T62100-CR Unified Wire Ethernet Controller (5 x 40/50/100Gb Ethernet) <br> Intel (R) I210 Gigabit Network 4.15.0-63-genericrk Connection (2 x 1GbE) |
 |   Operating System    |   Ubuntu 18.04.3 LTS  |
 |   BIOS                |   12/18/2015 American Megatrends Inc. 3204    |
 |   Microcode           |   0x43    |
@@ -48,16 +46,8 @@ Intel (R) I210 Gigabit Network 4.15.0-63-genericrk Connection (2 x 1GbE) |
 ### Boot and BIOS settings
 |   Item                |   Description     ||
 |--------------------   |-------------------|
-|   BIOS Setting        |   ___default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on
-iommu=pt isolcpus=1-21,28-48 nohz_full=1-21,28-48 rcu_nocbs=1-
-21,28-48___ <br>
-Note: nohz_full and rcu_nocbs is to disable Linux* kernel interrupts, and it’s important
-for zero-packet loss test. Generally, 1G huge pages are used for performance test.   |
-|   BIOS                |   CPU Power and Performance Policy (Performance) <br> CPU C-state Disabled <br>
-CPU P-state Disabled <br>
-Enhanced Intel® Speedstep® Tech Disabled <br> Turbo Boost Disabled<br>
-Intel VT Fordirected I/O(VT-d) Enable<br>
-Intel Virtualization Technology (VT-x) Enable   |
+|   BIOS Setting        |   ___default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on iommu=pt isolcpus=1-21,28-48 nohz_full=1-21,28-48 rcu_nocbs=1- 21,28-48___ <br> Note: nohz_full and rcu_nocbs is to disable Linux* kernel interrupts, and it’s important for zero-packet loss test. Generally, 1G huge pages are used for performance test.   |
+|   BIOS                |   CPU Power and Performance Policy (Performance) <br> CPU C-state Disabled <br> CPU P-state Disabled <br> Enhanced Intel® Speedstep® Tech Disabled <br> Turbo Boost Disabled<br> Intel VT Fordirected I/O(VT-d) Enable<br> Intel Virtualization Technology (VT-x) Enable   |
 |  DPDK Setting         |   Build Testpmd   |
 
 |   Item                |   Description     ||
@@ -92,7 +82,7 @@ Arrive is a broadband semiconductor solutions company with a broad portfolio of
 highly integrated systems-on-a-chip products combining voice, data, Internet and
 multimedia content for worldwide telecommunications companies.
 
-Our CodeChip� replaces inflexible fixed-silicon ASICs with a programmable
+Our CodeChip replaces inflexible fixed-silicon ASICs with a programmable
 carrier-class FPGA solution.  It includes a SoC FPGA Image with a full software
 development kit, including APIs and Drivers, and is backed by the integration
 and testing experience of Arrive.
