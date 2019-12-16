@@ -120,7 +120,7 @@ set 0 dst ip 100.0.1.0
 set 0 dst ip 100.0.4.0
 di
 
-e
+26041666
 
 
 set 0 size 1000
