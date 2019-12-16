@@ -46,13 +46,8 @@ the command language interface (CLI).
 ### Boot and BIOS settings
 |   Item                |   Description     ||
 |--------------------   |-------------------|
-<<<<<<< HEAD
 |   BIOS Setting        |   <i>default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on iommu=pt isolcpus=1-21,28-48 nohz_full=1-21,28-48 rcu_nocbs=1- 21,28-48</i> <br> <b><u>Note:</u></b> nohz_full and rcu_nocbs is to disable Linux* kernel interrupts, and it's important for zero-packet loss test. Generally, 1G huge pages are used for performance test.   |
 |   BIOS                |   CPU Power and Performance Policy (Performance) <br> CPU C-state Disabled <br> CPU P-state Disabled <br> Enhanced Intel (R) Speedstep (R) Tech Disabled <br> Turbo Boost Disabled<br> Intel VT Fordirected I/O(VT-d) Enable<br> Intel Virtualization Technology (VT-x) Enable   |
-=======
-|   BIOS Setting        |   ___default_hugepagesz=1G hugepagesz=1G hugepages=16 intel_iommu=on iommu=pt isolcpus=1-21,28-48 nohz_full=1-21,28-48 rcu_nocbs=1- 21,28-48___ <br> Note: nohz_full and rcu_nocbs is to disable Linux* kernel interrupts, and it’s important for zero-packet loss test. Generally, 1G huge pages are used for performance test.   |
-|   BIOS                |   CPU Power and Performance Policy (Performance) <br> CPU C-state Disabled <br> CPU P-state Disabled <br> Enhanced Intel® Speedstep® Tech Disabled <br> Turbo Boost Disabled<br> Intel VT Fordirected I/O(VT-d) Enable<br> Intel Virtualization Technology (VT-x) Enable   |
->>>>>>> perf_report
 |  DPDK Setting         |   Build Testpmd   |
 
 |   Item                |   Description     ||
@@ -78,11 +73,7 @@ the command language interface (CLI).
 ## Figure3: RFC2544 zero packet loss test on Intel® Ethernet Converged Network Adapter X710-DA4 
 !["Chart"](images/chart.png)
 ## References
-<<<<<<< HEAD
 <i>[1] https://fast.dpdk.org/doc/perf/DPDK_19_08_Intel_NIC_performance_report.pdf</i>
-=======
-___[1]___ https://fast.dpdk.org/doc/perf/DPDK_19_08_Intel_NIC_performance_report.pdf
->>>>>>> perf_report
 
 ## About Arrive 
 
@@ -90,11 +81,7 @@ Arrive is a broadband semiconductor solutions company with a broad portfolio of
 highly integrated systems-on-a-chip products combining voice, data, Internet and
 multimedia content for worldwide telecommunications companies.
 
-<<<<<<< HEAD
 Our CodeChip (TM) replaces inflexible fixed-silicon ASICs with a programmable
-=======
-Our CodeChip replaces inflexible fixed-silicon ASICs with a programmable
->>>>>>> perf_report
 carrier-class FPGA solution.  It includes a SoC FPGA Image with a full software
 development kit, including APIs and Drivers, and is backed by the integration
 and testing experience of Arrive.
