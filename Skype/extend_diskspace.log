@@ -1,0 +1,180 @@
+export FS=`expr $(fdisk -l /dev/vda | grep "Linux LVM" | awk '{print $3}') + 1`
+root@ubuntu:~# export LS=`expr $(fdisk -l /dev/vda | grep "Disk /dev/" | awk '{print $7}') - 1`
+root@ubuntu:~# echo -e "n\np\n\n$FS\n$LS\nw" | fdisk /dev/vda
+
+Welcome to fdisk (util-linux 2.27.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+
+Command (m for help): All space for primary partitions is in use.
+Adding logical partition 6
+No free sectors available.
+
+Command (m for help): 
+Disk /dev/vda: 32 GiB, 34359738368 bytes, 67108864 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xce3c900c
+
+Device     Boot    Start      End  Sectors  Size Id Type
+/dev/vda1  *        2048  1499135  1497088  731M 83 Linux
+/dev/vda2        1501182 41940991 40439810 19.3G  5 Extended
+/dev/vda3       41940992 67108863 25167872   12G 83 Linux
+/dev/vda5        1501184 41940991 40439808 19.3G 8e Linux LVM
+
+Partition table entries are not in disk order.
+
+Command (m for help): 
+
+Command (m for help): 4: unknown command
+
+Command (m for help): 6: unknown command
+
+Command (m for help): 
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Re-reading the partition table failed.: Device or resource busy
+
+The kernel still uses the old table. The new table will be used at the next reboot or after you run partprobe(8) or kpartx(8).
+
+root@ubuntu:~# reboot
+Connection to 172.33.46.16 closed by remote host.
+Connection to 172.33.46.16 closed.
+[08:53:53] tamnc@linuxsws018:gitkraken$ ping 172.33.46.16
+PING 172.33.46.16 (172.33.46.16) 56(84) bytes of data.
+64 bytes from 172.33.46.16: icmp_seq=4 ttl=63 time=1.25 ms
+64 bytes from 172.33.46.16: icmp_seq=5 ttl=63 time=0.763 ms
+64 bytes from 172.33.46.16: icmp_seq=6 ttl=63 time=0.702 ms
+^C
+--- 172.33.46.16 ping statistics ---
+6 packets transmitted, 3 received, 50% packet loss, time 5064ms
+rtt min/avg/max/mdev = 0.702/0.906/1.254/0.248 ms
+[08:54:07] tamnc@linuxsws018:gitkraken$ ssh root@172.33.46.16
+Welcome to Ubuntu 16.04.6 LTS (GNU/Linux 4.4.0-176-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+ * Kubernetes 1.18 GA is now available! See https://microk8s.io for docs or
+   install it with:
+
+     sudo snap install microk8s --channel=1.18 --classic
+
+ * Multipass 1.1 adds proxy support for developers behind enterprise
+   firewalls. Rapid prototyping for cloud operations just got easier.
+
+     https://multipass.run/
+
+3 packages can be updated.
+3 updates are security updates.
+
+New release '18.04.4 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+Last login: Mon Apr  6 08:53:13 2020 from 172.33.47.18root@ubuntu:~# vgextend ubuntu-vg /dev/vda3
+  Physical volume "/dev/vda3" successfully created
+  Volume group "ubuntu-vg" successfully extended
+root@ubuntu:~# lvextend -L +12G /dev/mapper/ubuntu--vg-root
+  Size of logical volume ubuntu-vg/root changed from 18.32 GiB (4691 extents) to 30.32 GiB (7763 extents).
+  Logical volume root successfully resized.
+root@ubuntu:~# resize2fs /dev/mapper/ubuntu--vg-root
+resize2fs 1.42.13 (17-May-2015)
+Filesystem at /dev/mapper/ubuntu--vg-root is mounted on /; on-line resizing required
+old_desc_blocks = 2, new_desc_blocks = 2
+The filesystem on /dev/mapper/ubuntu--vg-root is now 7949312 (4k) blocks long.
+
+root@ubuntu:~# sudo apt-get install -y nfs-kernel-server
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libaio1 libavahi-client3 libavahi-common-data libavahi-common3 libcups2 libfile-copy-recursive-perl libldb1 libpython2.7 libtalloc2 libtdb1 libtevent0 libwbclient0 python-crypto python-dnspython python-ldb python-samba python-talloc python-tdb samba-common
+  samba-common-bin samba-dsdb-modules samba-libs samba-vfs-modules tdb-tools update-inetd
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  keyutils libnfsidmap2 libtirpc1 nfs-common rpcbind
+Suggested packages:
+  watchdog
+The following NEW packages will be installed:
+  keyutils libnfsidmap2 libtirpc1 nfs-common nfs-kernel-server rpcbind
+0 upgraded, 6 newly installed, 0 to remove and 3 not upgraded.
+Need to get 467 kB of archives.
+After this operation, 1,846 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 libnfsidmap2 amd64 0.25-5 [32.2 kB]
+9% [Working]                                           
+Get:2 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 keyutils amd64 1.5.9-8ubuntu1 [47.1 kB]
+Get:3 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 libtirpc1 amd64 0.2.5-1ubuntu0.1 [75.4 kB]
+Get:4 http://us.archive.ubuntu.com/ubuntu xenial/main amd64 rpcbind amd64 0.2.3-0.2 [40.3 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-common amd64 1:1.2.8-9ubuntu12.2 [184 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu xenial-updates/main amd64 nfs-kernel-server amd64 1:1.2.8-9ubuntu12.2 [87.7 kB]
+Fetched 467 kB in 2s (198 kB/s)         
+Selecting previously unselected package libnfsidmap2:amd64.
+(Reading database ... 101950 files and directories currently installed.)
+Preparing to unpack .../libnfsidmap2_0.25-5_amd64.deb ...
+Unpacking libnfsidmap2:amd64 (0.25-5) ...
+Selecting previously unselected package keyutils.
+Preparing to unpack .../keyutils_1.5.9-8ubuntu1_amd64.deb ...
+Unpacking keyutils (1.5.9-8ubuntu1) ...
+Selecting previously unselected package libtirpc1:amd64.
+Preparing to unpack .../libtirpc1_0.2.5-1ubuntu0.1_amd64.deb ...
+Unpacking libtirpc1:amd64 (0.2.5-1ubuntu0.1) ...
+Selecting previously unselected package rpcbind.
+Preparing to unpack .../rpcbind_0.2.3-0.2_amd64.deb ...
+Unpacking rpcbind (0.2.3-0.2) ...
+Selecting previously unselected package nfs-common.
+Preparing to unpack .../nfs-common_1%3a1.2.8-9ubuntu12.2_amd64.deb ...
+Unpacking nfs-common (1:1.2.8-9ubuntu12.2) ...
+Selecting previously unselected package nfs-kernel-server.
+Preparing to unpack .../nfs-kernel-server_1%3a1.2.8-9ubuntu12.2_amd64.deb ...
+Unpacking nfs-kernel-server (1:1.2.8-9ubuntu12.2) ...
+Processing triggers for man-db (2.7.5-1) ...
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Processing triggers for ureadahead (0.100.0-19.1) ...Processing triggers for systemd (229-4ubuntu21.27) ...
+Setting up libnfsidmap2:amd64 (0.25-5) ...
+Setting up keyutils (1.5.9-8ubuntu1) ...
+Setting up libtirpc1:amd64 (0.2.5-1ubuntu0.1) ...
+Setting up rpcbind (0.2.3-0.2) ...
+Setting up nfs-common (1:1.2.8-9ubuntu12.2) ...
+
+Creating config file /etc/idmapd.conf with new version
+
+Creating config file /etc/default/nfs-common with new version
+Adding system user `statd' (UID 111) ...
+Adding new user `statd' (UID 111) with group `nogroup' ...
+Not creating home directory `/var/lib/nfs'.
+nfs-utils.service is a disabled or a static unit, not starting it.
+Setting up nfs-kernel-server (1:1.2.8-9ubuntu12.2) ...
+
+Creating config file /etc/exports with new version
+
+Creating config file /etc/default/nfs-kernel-server with new version
+Processing triggers for libc-bin (2.23-0ubuntu11) ...
+Processing triggers for ureadahead (0.100.0-19.1) ...
+Processing triggers for systemd (229-4ubuntu21.27) ...
+root@ubuntu:~# sudo apt-get install -y nfs-kernel-server^C
+root@ubuntu:~# cat << EOF | sudo tee -a /etc/exports
+> /home/ 10.1.1.0/24(rw,fsid=0,insecure,no_subtree_check,async)
+> /home/ATVN/ 10.1.1.0/24(rw,nohide,insecure,no_subtree_check,async)
+> EOF
+/home/ 10.1.1.0/24(rw,fsid=0,insecure,no_subtree_check,async)
+/home/ATVN/ 10.1.1.0/24(rw,nohide,insecure,no_subtree_check,async)
+root@ubuntu:~# sudo service nfs-kernel-server restart
+root@ubuntu:~# export HOST_IP=$(/sbin/ip -o -4 addr list ens3 | awk '{print $4}' | cut -d/ -f1)
+root@ubuntu:~# echo ${HOST_IP}
+10.1.1.19
+root@ubuntu:~# sudo mkdir -p /home/ATVN
+root@ubuntu:~# sudo mount -t nfs $HOST_IP:/home/ATVN /home/ATVN
+root@ubuntu:~# cd /home/
+ATVN/   ubuntu/ 
+root@ubuntu:~# cd /home/ATVN/
+root@ubuntu:/home/ATVN# ls
+root@ubuntu:/home/ATVN# ll
+total 8
+drwxr-xr-x 2 root root 4096 Apr  6 08:56 ./
+drwxr-xr-x 4 root root 4096 Apr  6 08:56 ../
+root@ubuntu:/home/ATVN#

@@ -7,12 +7,11 @@
 - [1.3  NUMA](#1.3)
 - [1.4 SR-IOV](#1.4)
 
-[2. Tìm hiểu về memory và slab trong linux kernel](#2)
+[2. TÌM HIỂU TỔ CHỨC MEMORY VÀ SLAB TRONG LINUX KERNEL](#2)
 
-[3. Sơ lược DPDK](#3)
-- [3.1 Khái niệm](#3.1)
-- [3.2 Ứng dụng](#3.2)
-- [3.3 Chức năng](#3.3)
+[3. CÁC KHÁI NIỆM MỚI](#3)
+
+- [3.1 NAT](#3.1)
 
 <a name = '1'></a>
 ## 1.   CÁC KỸ THUẬT VỀ ẢO HÓA 
@@ -72,7 +71,7 @@ Trong giải pháp SR-IOV, khái niệm VF (Virtual Function) được xuất hi
 
 
 <a name='2'></a>
-## 2.   Tìm hiểu tổ chức memory và slab trong linux kernel
+## 2.   TÌM HIỂU TỔ CHỨC MEMORY VÀ SLAB TRONG LINUX KERNEL
 Trong linux, memory được tổ chức thành các page chừng 4KB, tùy vào dòng CPU, hệ điều hành mà con số này có thể thay đổi, có thể lên đến 8KB hay 16KB một page. Trong khi CPU có thể thao tác đến từng byte, từng word nhưng đơn vị quản lý memory là page.
 
 Có thể xem page size qua getconf PAGE_SIZE
@@ -123,44 +122,7 @@ inode và dentries object sẽ được xóa khỏi slab cache.
 
 Inode là metadata của file
 Dentry là các component của một path + file name, ví dụ file /usr/bin/test sẽ tạo ra 4 dentries: /, usr, bin và test.
-
 <a name='3'></a>
-## 3.   Sơ lược về DPDK
+## 3.   CÁC KHÁI NIỆM MỚI
 <a name='3.1'></a>
-### 3.1 Khái niệm
-- DPDK là viết tắt của cụm từ Data Plane Development Kit là một tập thư viện và driver (cho các network interface controller). DPDK ban đầu do Intel phát triển nhằm hỗ trợ việc tăng tốc độ xử lý gói tin trên các dòng chip Intel x86 (từ dòng Atom cho đến dòng Xeon) và hiện nay đã hỗ trợ nhiều dòng chip khác như IBM Power 8, EZchip TILE-Gx và ARM.
-
-- DPDK ra đời nhằm giúp các dòng CPU đa nhiệm (general-purpose CPU) tăng tốc độ xử lý các gói tin. Intel đã đưa ra một vài thông số để chứng minh hiệu năng làm việc của DPDK như sau: với chip Xeon E5-2658 v4 thì tốc độ forward các gói tin ở Layer 3 (mỗi gói tin có chiều dài 64 byte) thì tốc độ xử lý có thể đạt đến 233Gbps.
-
-<a name='3.2'></a>
-### 3.2  Ứng dụng
-- CPUs
-
-    - Hiện rất nhiều loại kiến trúc CPU đang hỗ trợ DPDK: Intel x86_64, ia32, Power 7/8, Tilera (EZChip).
-
-- NICs
-
-    - R2.1: Intel, Cisco (VIC), Mellanox, Broadcom (Qlogic), Chelsio
-    - R2.2: +NetFPGA,…
-- OSes
-
-    - Ubuntu
-    - Redhat, Fedora
-- Hypervisors
-
-    - KVM
-    - VMware
-    - XEN
-
-<a name='3.3'></a>
-### 3.3 Chức năng
-- DPDK có thể:
-
-    - Gởi và nhận gói tin với ít chu kỳ CPU nhất (thường thì ít hơn 80 chu kỳ CPU)
-    - Phát triển các thuật toán bắt gói tin nhanh (như tcpdump)
-    - Chạy các ứng dụng mạng của bên thứ 3.
-    - Tối ưu việc quản lý bộ đệm
-    - Chuyển thao tác nhận gói tin từ push sang poll. Giúp giảm số lần interrupt, context switch và buffer copy nhằm tăng hiệu năng
-- Nhiều chức năng mạng sử dụng DPDK có thể xử lý tới hàng trăm triệu frame một giây, xử lý các gói tin với kích thước 64 bytes dùng card NIC PCIe*.
-
-- Tuy nhiên DPDK cũng còn có nhiều khuyết kiểm, người quản trị sẽ phải dành ra kha khá nhân CPU chỉ để xử lý gói tin. Các CPU đắt tiền này sẽ loop liên tục với tốc độ hàng GHz chỉ để chờ gói tin tới (tức là bình thường sẽ không làm gì cả, idle state).
+### 3.1 NAT

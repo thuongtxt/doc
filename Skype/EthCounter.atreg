@@ -1,0 +1,575 @@
+
+# ******************
+# RXMAC Processing Counter
+# ******************
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Type Read Only
+// RTL Instant Name  : RXMAC_pkttyp_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2000-0x201F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_multicast_pkt  : (0x2000-0x200F) 
+#                     + Typ = 1 :  rxmac_broadcast_pkt  : (0x2010-0x201F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_pkttyp_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Type Read To Clear
+// RTL Instant Name  : RXMAC_pkttyp_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3000-0x301F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_multicast_pkt  : (0x3000-0x300F) 
+#                     + Typ = 1 :  rxmac_broadcast_pkt  : (0x3010-0x301F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_pkttyp_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Status Read Only
+// RTL Instant Name  : RXMAC_pktstt_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2040-0x205F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_good_pkt       : (0x2040-0x204F) 
+#                     + Typ = 1 :  rxmac_error_pkt      : (0x2050-0x205F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_pktstt_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Status Read To Clear
+// RTL Instant Name  : RXMAC_pktstt_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3040-0x305F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_good_pkt       : (0x3040-0x304F) 
+#                     + Typ = 1 :  rxmac_error_pkt      : (0x3050-0x305F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_pktstt_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet FCS Error Read Only
+// RTL Instant Name  : RXMAC_fcserr_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2080-0x208F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_fcserr_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet FCS Error Read to Clear
+// RTL Instant Name  : RXMAC_fcserr_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3080-0x308F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_fcserr_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Jabber Read Only
+// RTL Instant Name  : RXMAC_jabber_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x20C0-0x20CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_jabber_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Jabber Read To Clear
+// RTL Instant Name  : RXMAC_jabber_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x30C0-0x30CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_jabber_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Oversize Read Only
+// RTL Instant Name  : RXMAC_ovrund_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2100-0x211F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_oversize_pkt   : (0x2100-0x210F) 
+#                     + Typ = 1 :  rxmac_undersize_pkt  : (0x2110-0x211F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_ovrund_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Oversize Read To Clear
+// RTL Instant Name  : RXMAC_ovrund_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3100-0x311F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  rxmac_oversize_pkt   : (0x3100-0x310F) 
+#                     + Typ = 1 :  rxmac_undersize_pkt  : (0x3110-0x311F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_ovrund_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Total Packet Drop Read Only
+// RTL Instant Name  : RXMAC_drpall_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2140-0x214F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_drpall_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Total Packet Drop Read To Clear
+// RTL Instant Name  : RXMAC_drpall_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3140-0x314F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_drpall_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Drop Overflow Read Only
+// RTL Instant Name  : RXMAC_drpovr_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2180-0x218F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_drpovr_cnt    %% RxMAC packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Packet Drop Overflow Read To Clear
+// RTL Instant Name  : RXMAC_drpovr_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3180-0x318F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_drpovr_cnt    %% RxMAC packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Byte Read Only
+// RTL Instant Name  : RXMAC_byte_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x21C0-0x21CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_byte_cnt      %% Rxmac byte counters  %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: RXMAC Counter Byte Read To Clear
+// RTL Instant Name  : RXMAC_byte_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x31C0-0x31CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% rxmac_byte_cnt      %% Rxmac byte counters  %% RC   %% 0x0      %% 0x0 
+// End:
+##################################################################
+
+
+##################################################################
+##################################################################
+
+# ******************
+# TXMAC Processing Counter
+# ******************
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Type Read Only
+// RTL Instant Name  : TXMAC_pkttyp_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2400-0x241F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_multicast_pkt  : (0x2400-0x240F) 
+#                     + Typ = 1 :  txmac_broadcast_pkt  : (0x2410-0x241F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_pkttyp_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Type Read To Clear
+// RTL Instant Name  : TXMAC_pkttyp_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3400-0x341F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_multicast_pkt  : (0x3400-0x340F) 
+#                     + Typ = 1 :  txmac_broadcast_pkt  : (0x3410-0x341F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_pkttyp_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Status Read Only
+// RTL Instant Name  : TXMAC_pktstt_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2440-0x245F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_good_pkt       : (0x2440-0x244F) 
+#                     + Typ = 1 :  txmac_error_pkt      : (0x2450-0x245F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_pktstt_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Status Read To Clear
+// RTL Instant Name  : TXMAC_pktstt_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3440-0x345F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_good_pkt       : (0x3440-0x344F) 
+#                     + Typ = 1 :  txmac_error_pkt      : (0x3450-0x345F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_pktstt_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet FCS Error Read Only
+// RTL Instant Name  : TXMAC_fcserr_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2480-0x248F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_fcserr_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet FCS Error Read to Clear
+// RTL Instant Name  : TXMAC_fcserr_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3480-0x348F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_fcserr_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Jabber Read Only
+// RTL Instant Name  : TXMAC_jabber_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x24C0-0x24CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_jabber_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Jabber Read To Clear
+// RTL Instant Name  : TXMAC_jabber_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x34C0-0x34CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_jabber_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Oversize Read Only
+// RTL Instant Name  : TXMAC_ovrund_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2500-0x251F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_oversize_pkt   : (0x2500-0x250F) 
+#                     + Typ = 1 :  txmac_undersize_pkt  : (0x2510-0x251F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_ovrund_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Oversize Read To Clear
+// RTL Instant Name  : TXMAC_ovrund_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3500-0x351F
+// Formula: Address + 16*Typ + $CID
+// Where: {$Typ(0-1)} %% {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+#               There are sides cnt as below            : 
+#                     + Typ = 0 :  txmac_oversize_pkt   : (0x3500-0x350F) 
+#                     + Typ = 1 :  txmac_undersize_pkt  : (0x3510-0x351F) 
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_ovrund_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Total Packet Drop Read Only
+// RTL Instant Name  : TXMAC_drpall_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2540-0x254F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_drpall_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Total Packet Drop Read To Clear
+// RTL Instant Name  : TXMAC_drpall_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3540-0x354F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_drpall_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Drop Overflow Read Only
+// RTL Instant Name  : TXMAC_drpovr_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x2580-0x258F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_drpovr_cnt    %% Txmac packet counter %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Packet Drop Overflow Read To Clear
+// RTL Instant Name  : TXMAC_drpovr_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x3580-0x358F
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_drpovr_cnt    %% Txmac packet counter %% RC   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Byte Read Only
+// RTL Instant Name  : TXMAC_byte_cnt_ro
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x25C0-0x25CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_byte_cnt      %% Txmac byte counters  %% RO   %% 0x0      %% 0x0 
+// End:
+
+##################################################################
+// Begin:
+// Register Full Name: TXMAC Counter Byte Read To Clear
+// RTL Instant Name  : TXMAC_byte_cnt_rc
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address: 0x35C0-0x35CF
+// Formula: Address + $CID
+// Where: {$CID(0-15): Client ID}
+// Description: The register count information as below. Depending on Typ it 's the events specify.
+// Width: 32
+// Register Type: {Counter}
+//#Field: [Bit:Bit] %%  Name               %% Description          %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]   %% txmac_byte_cnt      %% Txmac byte counters  %% RC   %% 0x0      %% 0x0 
+// End:
+##################################################################

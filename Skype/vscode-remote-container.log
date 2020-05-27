@@ -1,0 +1,171 @@
+[1 ms] Start: Resolving remote
+[4 ms] Setting up container for folder or workspace: /home/ATVN/tamnc/workspace/code/sof_workspace/vscode_remote_docker/zephyr_riscv_dev
+
+[11 ms] Start: Check Docker is running
+[73 ms] Start: Run: docker build -f /home/ATVN/tamnc/workspace/code/sof_workspace/vscode_remote_docker/zephyr_riscv_dev/.devcontainer/Dockerfile -t vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e /home/ATVN/tamnc/workspace/code/sof_workspace/vscode_remote_docker/zephyr_riscv_dev/.devcontainer
+[139 ms] Sending build context to Docker daemon  4.096kB
+[246 ms] Step 1/6 : FROM ubuntu1804_zephyr_riscv:v1.0
+[247 ms]  ---> c336bed6e909
+Step 2/6 : ARG USERNAME=tamnc
+[331 ms]  ---> Running in 19082cfdc84d
+[508 ms] Removing intermediate container 19082cfdc84d
+ ---> 7af526fbb218
+Step 3/6 : ARG USER_UID=16777638
+[579 ms]  ---> Running in 9c320ea6c520
+[726 ms] Removing intermediate container 9c320ea6c520
+ ---> 7a35d816e859
+Step 4/6 : ARG USER_GID=16777300
+[784 ms]  ---> Running in 5da9f041890b
+[932 ms] Removing intermediate container 5da9f041890b
+ ---> fa54dd0015e0
+Step 5/6 : RUN groupadd --gid $USER_GID $USERNAME     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME     && chmod 0440 /etc/sudoers.d/$USERNAME
+[992 ms]  ---> Running in 66019987deab
+[107455 ms] Removing intermediate container 66019987deab
+ ---> 8a5172a29893
+Step 6/6 : USER $USERNAME
+[107511 ms]  ---> Running in a5a42bb6d8d8
+[107670 ms] Removing intermediate container a5a42bb6d8d8
+ ---> 6a1874c4838e
+[107671 ms] Successfully built 6a1874c4838e
+[107685 ms] Successfully tagged vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e:latest
+[107705 ms] Start: Run: docker build -f /home/ATVN/tamnc/.vscode/extensions/ms-vscode-remote.remote-containers-0.101.1/scripts/updateUID.Dockerfile -t vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e-uid --build-arg BASE_IMAGE=vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e --build-arg REMOTE_USER=tamnc --build-arg NEW_UID=16777638 --build-arg NEW_GID=16777300 --build-arg IMAGE_USER=tamnc /home/ATVN/tamnc/.vscode/extensions/ms-vscode-remote.remote-containers-0.101.1/scripts
+[107791 ms] Sending build context to Docker daemon   7.68kB
+[107883 ms] Step 1/9 : ARG BASE_IMAGE
+Step 2/9 : FROM $BASE_IMAGE
+[107885 ms]  ---> 6a1874c4838e
+Step 3/9 : USER root
+[107885 ms]
+[107946 ms]  ---> Running in a6a1912a6c79
+[108122 ms] Removing intermediate container a6a1912a6c79
+ ---> 89bd549c0c5e
+Step 4/9 : ARG REMOTE_USER
+[108167 ms]  ---> Running in acd157aef871
+[108294 ms] Removing intermediate container acd157aef871
+ ---> fd063bd16a55
+Step 5/9 : ARG NEW_UID
+[108341 ms]  ---> Running in b92180dc90a6
+[108500 ms] Removing intermediate container b92180dc90a6
+ ---> a672951e7ab2
+Step 6/9 : ARG NEW_GID
+[108561 ms]  ---> Running in db51eaa4a7a1
+[108723 ms] Removing intermediate container db51eaa4a7a1
+ ---> 23c10de1fe35
+Step 7/9 : RUN /bin/sh -c '     eval $(sed -n "s/${REMOTE_USER}:[^:]*:\([^:]*\):\([^:]*\):[^:]*:\([^:]*\).*/OLD_UID=\1;OLD_GID=\2;HOME_FOLDER=\3/p" /etc/passwd);       eval $(sed -n "s/\([^:]*\):[^:]*:${NEW_UID}:.*/EXISTING_USER=\1/p" /etc/passwd);      eval $(sed -n "s/\([^:]*\):[^:]*:${NEW_GID}:.*/EXISTING_GROUP=\1/p" /etc/group);        if [ -z "$OLD_UID" ]; then              echo "Remote user not found in /etc/passwd ($REMOTE_USER).";    elif [ "$OLD_UID" = "$NEW_UID" -a "$OLD_GID" = "$NEW_GID" ]; then             echo "UIDs and GIDs are the same ($NEW_UID:$NEW_GID).";         elif [ "$OLD_UID" != "$NEW_UID" -a -n "$EXISTING_USER" ]; then          echo "User with UID exists ($EXISTING_USER=$NEW_UID).";       elif [ "$OLD_GID" != "$NEW_GID" -a -n "$EXISTING_GROUP" ]; then                 echo "Group with GID exists ($EXISTING_GROUP=$NEW_GID).";       else            echo "Updating UID:GID from $OLD_UID:$OLD_GID to $NEW_UID:$NEW_GID.";                 sed -i -e "s/\(${REMOTE_USER}:[^:]*:\)[^:]*:[^:]*/\1${NEW_UID}:${NEW_GID}/" /etc/passwd;                if [ "$OLD_GID" != "$NEW_GID" ]; then                   sed -i -e "s/\([^:]*:[^:]*:\)${OLD_GID}:/\1${NEW_GID}:/" /etc/group;          fi;             chown -R $NEW_UID:$NEW_GID $HOME_FOLDER;        fi;     '
+[108724 ms]
+[108784 ms]  ---> Running in 5b5148523230
+[109527 ms] UIDs and GIDs are the same (16777638:16777300).
+[110085 ms] Removing intermediate container 5b5148523230
+ ---> 8d99aa7b8b46
+Step 8/9 : ARG IMAGE_USER
+[110146 ms]  ---> Running in 53939dbc21ea
+[110316 ms] Removing intermediate container 53939dbc21ea
+ ---> 7252ec4679ac
+Step 9/9 : USER $IMAGE_USER
+[110377 ms]  ---> Running in 4b868b1bd1d9
+[110545 ms] Removing intermediate container 4b868b1bd1d9
+ ---> e65794be1ed4
+[110546 ms] Successfully built e65794be1ed4
+[110560 ms] Successfully tagged vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e-uid:latest
+[110573 ms] Start: Starting container
+[110573 ms] Start: Run: docker run -a STDOUT -a STDERR --mount source=/home/ATVN/tamnc/workspace/code/sof_workspace,target=/workspace,type=bind,consistency=cached -l vsch.quality=stable -l vsch.remote.devPort=0 -l vsch.local.folder=/home/ATVN/tamnc/workspace/code/sof_workspace/vscode_remote_docker/zephyr_riscv_dev --entrypoint /bin/sh vsc-zephyr_riscv_dev-56d48d3f7ffda89d2b775ae508a2652e-uid -c echo Container started ; while sleep 1; do :; done
+[111424 ms] Container started
+[111468 ms] Start: Inspecting container
+[111483 ms] Start: Run in container: uname -m
+[111891 ms] x86_64
+[111892 ms]
+[111892 ms] Start: Run in container: (cat /etc/os-release || cat /usr/lib/os-release) 2>/dev/null
+[111895 ms] NAME="Ubuntu"
+VERSION="18.04.2 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.2 LTS"
+VERSION_ID="18.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=bionic
+UBUNTU_CODENAME=bionic
+[111895 ms]
+[111896 ms] Start: Run in container: cat /etc/passwd
+[111901 ms] Start: Updating configuration state
+[111931 ms] Start: Setup shutdown monitor
+[111939 ms] Forking shutdown monitor: /home/ATVN/tamnc/.vscode/extensions/ms-vscode-remote.remote-containers-0.101.1/dist/shutdownMonitorProcess /run/user/16777638/vscode-remote-containers-f78a5f9363c3bc21badd91f5a15a377ef1c7cc21.sock singleContainer Info /home/ATVN/tamnc/.config/Code/logs/20200402T214331/exthost8/ms-vscode-remote.remote-containers
+[111949 ms] Start: Run in container: test -d /home/tamnc/.vscode-server
+[111951 ms]
+[111951 ms]
+[111951 ms] Exit code 1
+[111952 ms] Start: Run in container: test -d /home/tamnc/.vscode-remote
+[111953 ms]
+[111953 ms]
+[111953 ms] Exit code 1
+[111954 ms] Start: Run in container: set -o noclobber ; mkdir -p '/home/tamnc/.vscode-server/data/Machine' && { > '/home/tamnc/.vscode-server/data/Machine/.writeMachineSettingsMarker' ; } 2> /dev/null
+[111959 ms]
+[111960 ms]
+[111960 ms] Start: Run in container: mkdir -p '/home/tamnc/.vscode-server/data/Machine' && cat >'/home/tamnc/.vscode-server/data/Machine/settings.json' <<'settingsJSON'
+[111965 ms]
+[111966 ms]
+[111967 ms] Start: Run in container: test -d /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054
+[111968 ms]
+[111968 ms]
+[111968 ms] Exit code 1
+[111968 ms] Installing VS Code Server for commit c47d83b293181d9be64f27ff093689e8e7aed054
+[111968 ms] Start: Run in container: mkdir -p /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054_1585896147500
+[111972 ms]
+[111972 ms]
+[111975 ms] Start: Run: docker exec -w /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054_1585896147500 -u tamnc -i eb9659414db337f4a627cd70c9283b11b7ae0cd7030cb503cb8f4a20295c1aa7 tar --no-same-owner -xz --strip-components 1
+[113382 ms]
+[113383 ms]
+[113383 ms] Start: Run in container: mv -n /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054_1585896147500 /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054
+[113388 ms]
+[113388 ms]
+[113389 ms] Start: Launching Remote-Containers helper.
+[113394 ms] Start: Run in container: cat <<'EOF-/tmp/vscode-remote-containers-50f29469fa7d015a28c50daa5f0030042d5afd4a.js' >/tmp/vscode-remote-containers-50f29469fa7d015a28c50daa5f0030042d5afd4a.js
+[113398 ms]
+[113398 ms]
+[113398 ms] Start: Run in container: # Copy .gitconfig
+[113414 ms]
+[113415 ms]
+[113415 ms] Start: Run in container: command -v git >/dev/null 2>&1 && git config --global credential.helper '!f() { /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054/node /tmp/vscode-remote-containers-50f29469fa7d015a28c50daa5f0030042d5afd4a.js $*; }; f' || true
+[113420 ms]
+[113420 ms]
+[113421 ms] Start: Run in container: set -o noclobber ; mkdir -p '/home/tamnc/.vscode-server/data/Machine' && { > '/home/tamnc/.vscode-server/data/Machine/.installExtensionsMarker' ; } 2> /dev/null
+[113425 ms]
+[113425 ms]
+[113429 ms] Start: Run in container: cd /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054; export VSCODE_AGENT_FOLDER=/home/tamnc/.vscode-server; /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054/server.sh --install-extension ms-vscode.cpptools --force
+[117941 ms] Installing extensions...
+Installing extension 'ms-vscode.cpptools' v0.27.0...
+Extension 'ms-vscode.cpptools' v0.27.0 was successfully installed.
+[117941 ms]
+[117941 ms] Start: Run in container: set -o noclobber ; mkdir -p '/home/tamnc/.vscode-server/data/Machine' && { > '/home/tamnc/.vscode-server/data/Machine/.postCreateCommandMarker' ; } 2> /dev/null
+[117946 ms]
+[117947 ms]
+[117947 ms] Start: Run in container: test -f /home/tamnc/.vscode-server/.postCreateCommandMarker
+[117949 ms]
+[117949 ms]
+[117949 ms] Exit code 1
+[117950 ms] Start: Run in container: for pid in `cd /proc && ls -d [0-9]*`; do { echo $pid ; readlink -f /proc/$pid/cwd ; xargs -0 < /proc/$pid/environ ; xargs -0 < /proc/$pid/cmdline ; } ; echo ; done 2>/dev/null
+[118005 ms] Start: Run: docker exec -w /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054 -u tamnc -e SHELL=/bin/bash -e VSCODE_AGENT_FOLDER=/home/tamnc/.vscode-server eb9659414db337f4a627cd70c9283b11b7ae0cd7030cb503cb8f4a20295c1aa7 /home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054/server.sh --disable-user-env-probe --port 0
+[118587 ms]
+
+*
+* Visual Studio Code Server
+*
+* Reminder: You may only use this software with Visual Studio family products,
+* as described in the license https://aka.ms/vscode-remote/license
+*
+
+
+[118625 ms] IP Address: 172.17.0.2
+[118627 ms] Extension host agent listening on 41083
+
+
+[06:42:34] Extension host agent started.
+[118627 ms] Start: Run in container: echo 41083 >/home/tamnc/.vscode-server/bin/c47d83b293181d9be64f27ff093689e8e7aed054/.devport
+[118628 ms]
+[118629 ms]
+[118630 ms] Forwarding local port 41083 to container port 41083
+[119432 ms] [06:42:34] [::ffff:127.0.0.1][4e3d1700][ManagementConnection] New connection established.
+[120136 ms] [06:42:35] [::ffff:127.0.0.1][6c033326][ExtensionHostConnection] New connection established.
+[120149 ms] [06:42:35] [::ffff:127.0.0.1][6c033326][ExtensionHostConnection] <179> Launched Extension Host Process.
+[121830 ms] [06:42:37] [File Watcher (chokidar)] Inotify limit reached (ENOSPC)
