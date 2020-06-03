@@ -1,0 +1,59 @@
+===============CONFIG SERDES SDH =========================
+./apps/ep_app/epapp -s 6a210081 -w "ff/ff/ff f.f.f"
+hal debug dis
+device show readwrite dis dis
+device reset
+device init
+debug ciena mro xc hide direct
+serdes mode 5,9,13 stm16
+sdh line rate 5,9,13 stm16
+sdh line mode 5,9,13 sonet
+sdh line loopback 5,9,13 release
+sdh map aug16.5.1,9.1,13.1 4xaug4s
+sdh map aug4.5.1-5.4,9.1-9.4,13.1-13.4 4xaug1s
+sdh map aug1.5.1-5.16,9.1-9.16,13.1-13.16 3xvc3s
+sdh map vc3.5.1.1-5.16.3,9.1.1-9.16.3,13.1.1-13.16.3 c3
+sdh line loopback 5 local
+serdes loopback 5 local
+vcg create 1 vcat vc3
+vcg member provision 1 vc3.5.1.1
+eth flow create 1
+eth flow egress destmac 1 C0.CA.C0.CA.C0.CA
+eth flow egress srcmac 1 C0.FE.C0.FE.C0.FE
+eth flow egress vlan add 1 1 1.1.4 none
+eth flow ingress vlan add 1 1 1.1.4 none
+encap channel flowbind vcg.1 1
+eth flow egress cvlan tpid 1 0x8100
+eth flow enable 1
+
+===============CONFIG ATT ETH =========================
+att eth flow create 1
+eth default cvlantpid 0x8100
+eth default svlantpid 0x8838
+att eth flow egress ethtype 1 0x8847
+att eth flow ingress ethtype 1 0x8847
+att eth flow egress srcmac 1 C0.CA.C0.CA.C0.CA
+att eth flow egress destmac 1 C0.FE.C0.FE.C0.FE
+att eth flow egress vlan 1 1.1.4 none none
+att eth flow ingress vlan 1 1.1.4 none none 
+att eth flow egress vlantpid 1 0x8100
+att eth flow ingress vlantpid 1 0x8100
+att eth flow bw cir 1 1000
+att eth flow bw cbs 1 128
+att eth flow maxpacketsize 1 128
+att eth flow minpacketsize 1 128
+att eth flow prbs invert 1
+att eth flow prbs mode 1 sequence
+att eth flow prbs fixpattern 1 15
+att eth flow prbs generator mode 1 continuous
+att eth flow prbs enable 1
+att eth flow prbs framelength mode 1 fixed
+att eth flow enable 1
+show att eth flow 1
+show att eth flow counter 1 ro
+debug att eth flow pktdum cfg rx en en en en 1
+debug att eth flow pktdum show rx ro
+debug att eth flow pktdum cfg tx en en en en 1
+debug att eth flow pktdum show tx ro
+debug att eth flow show headerrx 1
+debug att eth flow show headertx 1

@@ -1,0 +1,724 @@
+######################################################################################
+# Arrive Technologies
+# Register Description Document
+# Revision 1.0 - 2018.OCT.01
+
+######################################################################################
+# This section is for guideline
+# Refer to \\Hcmcserv3\Projects\internal_tools\atvn_vlibs\bin\rgm_gen\docs\REGISTER_DESCRIPTION_GUIDELINE.pdf
+# File name: filename.atreg (atreg = ATVN register define)
+# Comment out a line: Please use (# or //#) character at the beginning of the line
+# Delimiter character: (%%)
+
+######################################################################################
+#| Access Policy| Use Case| Description                | Effect of a Write on Current Field Value  | Effect of a Read on Current Field Value | Read-back Value |
+#| ------|-----------|---------------------------------| ------------------------------------------|-----------------------------------------|-----------------|
+#| RO    | Status    | Read Only                       | No effect                | No effect            | Current Value |
+#| RW    | Config    | Read, Write                     | Changed to written value | No effect            | Current value |
+#| RC    | Status    | Read Clears All                 | No effect                | Sets all bits to 0   | Current value |
+#| RS    | UNKNOW    | Read Sets All                   | No effect                | Sets all bits to 1   | Current value |
+#| WRC   | UNKNOW    | Write, Read Clears All          | Changed to written value | Sets all bits to 0   | Current value |
+#| WRS   | UNKNOW    | Write, Read Sets All            | Changed to written value | Sets all bits to 1   | Current value |
+#| WC    | Status    | Write Clears All                | Sets all bits to 0       | No effect            | Current value |
+#| WS    | Status    | Write Sets All                  | Sets all bits to 1       | No effect            | Current value |
+#| WSRC  | UNKNOW    | Write Sets All, Read Clears All | Sets all bits to 1       | Sets all bits to 0   | Current value |
+#| WCRS  | UNKNOW    | Write Clears All,Read Sets All  | Sets all bits to 0       | Sets all bits to 1   | Current value |
+#| W1C   | Interrupt | Write 1 to Clear                | If the bit in the wr value is a 1, the corresponding bit in the field is set to 0. Otherwise, the field bit is not affected | No effect | Current Value |
+#| W1S   | Interrupt | Write 1 to Set                  | If the bit in the wr value is a 1, the corresponding bit in the field is set to 1. Otherwise, the field bit is not affected | No effect | Current value |
+#| W1T   | UNKNOW    | Write 1 to Toggle               | If the bit in the wr value is a 1, the corresponding bit in the field is inverted. Otherwise, the field bit is not affected | No effect | Current value |
+#| W0C   | Interrupt | Write 0 to Clear                | If the bit in the wr value is a 0, the corresponding bit in the field is set to 0. Otherwise, the field bit is not affected | No effect | Current value |
+#| W0S   | Interrupt | Write 0 to Set                  | If the bit in the wr value is a 0, the corresponding bit in the field is set to 1. Otherwise, the field bit is not affected | No effect | Current value |
+#| W0T   | UNKNOW    | Write 0 to Toggle               | If the bit in the wr value is a 0, the corresponding bit in the field is inverted. Otherwise, the field bit is not affected | No effect | Current value |
+#| W1SRC | UNKNOW    | Write 1 to Set, Read Clears All | If the bit in the wr value is a 1, the corresponding bit in the field is set to 1. Otherwise, the field bit is not affected | Sets all bits to 0 | Current value |
+#| W1CRS | UNKNOW    | Write 1 to Clear, Read Sets All | If the bit in the wr value is a 1, the corresponding bit in the field is set to 0. Otherwise, the field bit is not affected | Sets all bits to 1 | Current value |
+#| W0SRC | UNKNOW    | Write 0 to Set, Read Clears All | If the bit in the wr value is a 0, the corresponding bit in the field is set to 1. Otherwise, the field bit is not affected | Sets all bits to 0 | Current value |
+#| W0CRS | UNKNOW    | Write 0 to Clear, Read Sets All | If the bit in the wr value is a 0, the corresponding bit in the field is set to 0. Otherwise, the field bit is not affected | Sets all bits to 1 | Current value |
+#| WO    | Config    | Write Only                      | Changed to written value | No effect | Undefined |
+#| WOC   | UNKNOW    | Write Only Clears All           | Sets all bits to 0     | No effect | Undefined |
+#| WOS   | UNKNOW    | Write Only Sets All             | Sets all bits to 1     | No effect | Undefined |
+#| W1    | UNKNOW    | Write Once                      | Changed to written value if this is the first write operation after a hard reset. Otherwise, has no effect | No effect | Current value |
+#| WO1   | UNKNOW    | Write Only, Once                | Changed to written value if this is the first write operation after a hard reset. Otherwise, has no effect | No effect | Undefined |
+#=============================================================================
+# Sample
+#=============================================================================
+######################################################################################
+#SAMPLE> // Begin:
+#SAMPLE> //# Some description
+#SAMPLE> // Register Full Name: Device Version ID
+#SAMPLE> // RTL Instant Name: VersionID
+#SAMPLE> //# {FunctionName,SubFunction_InstantName_Description}
+#SAMPLE> //# RTL Instant Name and Full Name MUST be unique within a register description file
+#SAMPLE> // Address: 0x00_0000
+#SAMPLE> //# Address is relative address, will be sum with Base_Address for each function block
+#SAMPLE> // Formula      : Address + $portid 
+#SAMPLE> // Where        : {$portid(0-7): port identification} 
+#SAMPLE> // Description  : This register indicates the module' name and version. 
+#SAMPLE> // Width: 32
+#SAMPLE> // Register Type: {Status}
+#SAMPLE> //# Field: [Bit:Bit] %%  Name     %% Description            %% Type %% SW_Reset %% HW_Reset
+#SAMPLE> // Field: [31:24]    %%  Year     %% 2013                   %% RO   %% 0x0D     %% 0x0D
+#SAMPLE> // Field: [23:16]    %%  Week     %% Week Synthesized FPGA  %% RO   %% 0x0C     %% 0x0C
+#SAMPLE> // Field: [15:8]     %%  Day      %% Day Synthesized FPGA   %% RO   %% 0x16     %% 0x16
+#SAMPLE> // Field: [7:4]      %%  VerID    %% FPGA Version           %% RO   %% 0x0      %% 0x0
+#SAMPLE> // Field: [3:0]      %%  NumID    %% Number of FPGA Version %% RO   %% 0x1      %% 0x1
+#SAMPLE> // End:
+######################################################################################
+
+#=============================================================================
+#define address offset and name rule of sub-core inside CodeChip(8xOC48 + 1xOC192 + 2 XFI)
+#=============================================================================
+ADDR_DEFINE TOP       [24:0]  0x0F0_0000-0x0FF_FFFF AF6A210081_RD_TOP                           //TOP global register, SAME OLD PROJECTS  
+ADDR_DEFINE GLB       [24:0]  0x000_0000-0x000_FFFF AF6A210081_RD_GLB                           //CORE global register 
+ADDR_DEFINE PWE1      [24:0]  0x007_0000-0x007_FFFF AF6A210081_RD_PWE                           //PWE1-Nha^n 
+ADDR_DEFINE PMC       [24:0]  0x070_0000-0x07F_FFFF AF6A210081_RD_PM                            //PMC-tCuong
+
+ADDR_DEFINE CDR1      [24:0]  0x0C0_0000-0x0C3_FFFF AF6A210081_RD_CDR_v3_TimGen                 //CDR Low/High Oder -D.Thanh              
+ADDR_DEFINE CDR2      [24:0]  0x0C4_0000-0x0C7_FFFF AF6A210081_RD_CDR_v3_TimGen                 //CDR Low/High Oder
+ADDR_DEFINE CDR3      [24:0]  0x0C8_0000-0x0CB_FFFF AF6A210081_RD_CDR_v3_TimGen                 //CDR Low/High Oder               
+ADDR_DEFINE CDR4      [24:0]  0x0CC_0000-0x0CF_FFFF AF6A210081_RD_CDR_v3_TimGen                 //CDR Low/High Oder 
+         
+
+ADDR_DEFINE CDR     	[24:0]  0x0E0_0000-0x0E7_FFFF 	AF6A210081_RD_CDR_v3_ACR                //CDR ACR/DCR version 3 -D.Thanh              
+ADDR_DEFINE TSSHAPER 	[24:0]  0x0E8_0000-0x0E8_FFFF 	AF6A210081_RD_CDR_v3_TxShapper          //CDR Timestampe Tx Shapper version 3 -D.Thanh 
+
+#ADDR_DEFINE ETH1      [24:0]  0x002_0000-0x002_FFFF AF6A210081_RD_ETH                        //ETH pass through port 1 to 8: XFI                 
+#ADDR_DEFINE ETH2      [24:0]  0x003_0000-0x003_FFFF AF6CNC0011_RD_SGMII_Multirate            //ETH pass through port 1 to 16: 10/100/1000M SGMII 
+#ADDR_DEFINE ETH3      [24:0]  0x004_0000-0x004_FFFF AF6A210081_RD_ETH                        //ETH pass through port 9 to 16: XFI -D.Tu
+
+ADDR_DEFINE PDH_DLK 	[24:0]  0x038_0000-0x03B_FFFF AF6A210081_RD_PDH_PRM                      //DLK-Huynh
+ADDR_DEFINE PLA     	[24:0]  0x040_0000-0x04F_FFFF AF6A210081_RD_PLA                          //PLA -D.Thong
+ADDR_DEFINE PDA     	[24:0]  0x050_0000-0x05F_FFFF AF6A210081_RD_PDA                          //PDA -V.Cuong
+ADDR_DEFINE CLA     	[24:0]  0x060_0000-0x06F_FFFF AF6CCI0081_RD_CLAEG_V01                    //CLA -Khoa
+ADDR_DEFINE OCN     	[24:0]  0x010_0000-0x01F_FFFF AF6A210081_RD_OCN                          //OCN -An.Phuong
+ADDR_DEFINE POH     	[24:0]  0x020_0000-0x02F_FFFF AF6A210081_RD_POH_BER                      //POH,BER -T.Anh (Boy)
+#ADDR_DEFINE AME     	[24:0]  0x030_0000-0x030_FFFF AF6A210081_RD_AME
+
+ADDR_DEFINE PDH1    	[24:0]  0x100_0000-0x10F_FFFF AF6A210081_RD_PDH_v3                        //PDH48  Low Order -Huynh/D.Thanh
+ADDR_DEFINE PDH2    	[24:0]  0x110_0000-0x11F_FFFF AF6A210081_RD_PDH_v3                        //PDH48  Low Order       
+ADDR_DEFINE PDH3    	[24:0]  0x120_0000-0x12F_FFFF AF6A210081_RD_PDH_v3                        //PDH48  Low Order       
+ADDR_DEFINE PDH4    	[24:0]  0x130_0000-0x13F_FFFF AF6A210081_RD_PDH_v3                        //PDH48  Low Order     
+  
+#ADDR_DEFINE PDH5    [24:0] 0x140_0000-0x14F_FFFF AF6A210081_RD_PDH_v3                       //PDH48  Low Order -Huynh/D.Thanh
+#ADDR_DEFINE PDH6    [24:0] 0x150_0000-0x15F_FFFF AF6A210081_RD_PDH_v3                       //PDH48  Low Order       
+#ADDR_DEFINE PDH7    [24:0] 0x160_0000-0x16F_FFFF AF6A210081_RD_PDH_v3                       //PDH48  Low Order       
+#ADDR_DEFINE PDH8    [24:0] 0x170_0000-0x17F_FFFF AF6A210081_RD_PDH_v3                       //PDH48  Low Order       
+
+ADDR_DEFINE BERT       	[24:0]  0x035_0000-0x035_FFFF AF6A210081_RD_BERT_OPT                  //BERT GEN/MON -Nga^n
+#ADDR_DEFINE BERT_MON  	[24:0]  0x036_0000-0x036_FFFF AF6A210081_RD_BERT_MON                   //BERT MON
+#ADDR_DEFINE BERT_MON_PW  [24:0]  0x037_0000-0x037_FFFF AF6A210081_RD_BERT_MON_PW             //BERT MON PW
+
+ADDR_DEFINE MAP1    [24:0]  0x080_0000-0x083_FFFF AF6A210081_RD_MAP                           //MAP48 Low Order -Huynh/D.Thanh   
+ADDR_DEFINE MAP2    [24:0]  0x084_0000-0x087_FFFF AF6A210081_RD_MAP                           //MAP48 Low Order
+ADDR_DEFINE MAP3    [24:0]  0x088_0000-0x08B_FFFF AF6A210081_RD_MAP                           //MAP48 Low Order
+ADDR_DEFINE MAP4    [24:0]  0x08C_0000-0x08F_FFFF AF6A210081_RD_MAP                           //MAP48 Low Order
+ 
+ADDR_DEFINE INTPMC  [24:0]  0x1E0_0000-0x1E7_FFFF AF6A210081_RD_INTPMC                        //PW interrupt -tNha^n  
+ADDR_DEFINE INTR    [24:0]  0x1E8_0000-0x1EB_FFFF AF6A210081_RD_INTR                          //Global interrupt mask control
+ADDR_DEFINE GLBPMC  [24:0]  0x1F0_0000-0x1FF_FFFF AF6CNC0022_RD_GLBPMC                        //PW internal counter 1 pages
+ADDR_DEFINE DCCK    [24:0]  0x1EC_0000-0x1EF_FFFF AF6CNC0022_RD_DCCK                          //OH DCC/K bytes over SGMII - M.Quang
+
+ADDR_DEFINE LOHDLCENC   [24:0] 0x140_0000-0x14F_FFFF  AF6A210081_RD_ENC                     //LO POS ENC - T.Anh (Kom)    
+ADDR_DEFINE LOVCAT      [24:0] 0x150_0000-0x15F_FFFF  AF6A210081_RD_LOVCAT                  //LO VCAT/LCAS - Hoang
+ADDR_DEFINE HOVCAT      [24:0] 0x160_0000-0x16F_FFFF  AF6A210081_RD_HOVCAT                  //HO VCAT/LCAS - LongD
+ADDR_DEFINE HOGFPENC    [24:0] 0x170_0000-0x17F_FFFF  AF6A210081_RD_GFP_HO                  //HO GFP/GFP-T ENC/DEC - T.Anh (Kom)
+
+ADDR_DEFINE LOHDLCDEC   [24:0] 0x180_0000-0x18F_FFFF  AF6A210081_RD_DEC_PARSER                 //LO POS DEC and Parser - MTuan and HT.Nguyen
+ADDR_DEFINE LOGFPDEC    [24:0] 0x190_0000-0x19F_FFFF  AF6A210081_RD_GFP_LO                 //LO GFP DEC- T.Anh (Kom)
+ADDR_DEFINE HOPOS       [24:0] 0x1A0_0000-0x1AF_FFFF  AF6A210081_RD_HOPOS                      //HO POS ENC/DEC - T.Anh (Kom)
+ADDR_DEFINE HOPARSE     [24:0] 0x1B0_0000-0x1BF_FFFF  AF6A210081_RD_DEC_PARSER                 //HO POS DEC and Parser- M.Quang
+
+ADDR_DEFINE ETHFL_LKP1  [24:0]  0x090_0000-0x090_FFFF AF6A210081_RD_IGFLOW                   //Ethernet Flow LookUp -D.Tu/Huynh
+ADDR_DEFINE ETHFL_LKP2  [24:0]  0x091_0000-0x091_FFFF AF6A210081_RD_GLB_DEBUG                //Debug prbs
+
+ADDR_DEFINE EGHDR1      [24:0]  0x094_0000-0x094_FFFF AF6CCI0081_RD_PKTASSEMBLY              //PPP/HDLC/FR/ML + GFP Header Insertion - Khoa
+#ADDR_DEFINE EGHDR2     [24:0]  0x095_0000-0x095_FFFF AF6A210081_RD_PKTASSEMBLY              //PPP/HDLC/FR/ML + GFP Header Insertion
+ADDR_DEFINE MPIG   	    [24:0]  0x096_0000-0x096_FFFF AF6A210081_RD_MPIG   					 //MPIG - Ngân
+
+#ADDR_DEFINE IGRSQ      [24:0]  0x097_0000-0x097_FFFF AF6A210081_RD_IGRSQ  					 //Ingress MP Re-Sequence -D.Tu/Huynh
+ADDR_DEFINE IGRSQ       [24:0]  0x098_0000-0x09B_FFFF AF6A210081_RD_IGRSQ  					 //Ingress MP Re-Sequence -D.Tu/Huynh
+
+ADDR_DEFINE MPEG        [24:0]  0x1D0_0000-0x1DF_FFFF AF6A210081_RD_MPEG                     //MPEG - Nga^n
+ADDR_DEFINE PMC_MS      [24:0]  0x1C0_0000-0x1CF_FFFF AF6A210081_RD_IMSG_PMC2	             //iMS counters - Khoa
+
+ADDR_DEFINE UPSR        [24:0]  0x00B_0000-0x00B_FFFF AF6A210081_RD_UPSR                       //UPSR - An.Phuong
+ADDR_DEFINE ETHPASS     [24:0]  0x00C_0000-0x00C_FFFF AF6A210081_RD_ETHPASS                    //ETHPASS -tNha^n
+#ADDR_DEFINE PTP         [24:0]  0x00D_0000-0x00D_FFFF AF6A210081_RD_PTP                        //PTP - Nga^n
+            
+
+ADDR_DEFINE OCNGBESER  [24:0]   0xF6_0000-0xF9_1FFF   AF6A210081_OC192_OC48_OC12_OC3_RD_DIAG.atreg        //OC192_OC48_OC12_10G_16ch Serdes Turning Configuration + Serdes Type Configuration      
+#ADDR_DEFINE ETH_XFI     [24:0]  0x1C0_0000-0x1C0_FFFF AF6A210081_RD_XFI               
+
+#=============================================================================
+ATT offset
+#=============================================================================
+ADDR_DEFINE ATTETH     [24:0]	0xA0_0000-0xB0_FFFF AF6A210081_ATTETH.atreg                  // ATT ETH
+ADDR_DEFINE ATTPRBS    [24:0]	0x1D_0000-0x1D_FFFF AF6A210081_ATTETH.atreg                  // ATT TDM PRBS
+######################################################################################
+#    *********
+#   * Device Product ID *
+#    *********
+// Begin:
+// Register Full Name: Device Product ID
+// RTL Instant Name  : ProductID
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0000
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register indicates Product ID. 
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name           %% Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:0]     %%  ProductID      %% ProductId               %% RO %% 0x60210051 %% 0x60210051
+// End:
+
+######################################################################################
+#    *********
+#   * Device Year Month Day Version ID *
+#    *********
+// Begin:
+// Register Full Name: Device Year Month Day Version ID
+// RTL Instant Name  : YYMMDD_VerID
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0002
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register indicates Year Month Day and main version ID. 
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name           %% Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:24]    %%  Year           %% Year                    %% RO %% 0x16 %% 0x16
+// Field: [23:16]    %%  Month          %% Month                   %% RO %% 0x01 %% 0x01
+// Field: [15:8 ]    %%  Day            %% Day                     %% RO %% 0x30 %% 0x30
+// Field: [7:0 ]     %%  Version        %% Version                 %% RO %% 0x40 %% 0x40
+// End:
+
+######################################################################################
+#    *********
+#   * Device Internal ID *
+#    *********
+// Begin:
+// Register Full Name: Device Internal ID
+// RTL Instant Name  : InternalID
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0003
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register indicates internal ID. 
+// Width: 16
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name           %% Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [15:0]     %%  InternalID     %% InternalID              %% RO %% 0x0 %% 0x0
+// End:
+
+######################################################################################
+#    *************
+#   * Sub-Core Active *
+#    *************
+// Begin:
+// Register Full Name: GLB Sub-Core Active  
+// RTL Instant Name  : Active
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0001
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register indicates the active ports.
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31: 0] %% SubCoreEn %% Enable per sub-core {1}: Enable {0}: Disable %% RW %% 0x00000000 %% 0x00000000
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW Control *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW Control 
+// RTL Instant Name  : DebugPwControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0010
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure debug PW parameters
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31] %% Oc192CepEna  %% Set 1 to enable debug OC192c CEP PW %% RW %% 0x0 %% 0x0
+// Field: [30:20] %% LoTdmPwID  %% Lo TDM PW ID or HO Master STS ID corresponding to global PW ID %% RW %% 0x0 %% 0x0
+// Field: [19:7] %% GlobalPwID12_0  %% Global PW ID bit12_0 need to debug %% RW %% 0x0 %% 0x0
+// Field: [6:4] %% OC48ID  %% OC48 ID, OC192 ID %% RW %% 0x0 %% 0x0
+// #Field: [3] %% LoOC24Slice  %% Low Order OC24 slice if the PW belong to low order path  %% RW %% 0x0 %% 0x0
+// Field: [3] %% GlobalPwID13  %% Global PW ID bit13 need to debug %% RW %% 0x0 %% 0x0
+// Field: [2:0] %% HoPwType  %% High Order PW type if the PW belong to high order path
+//      0: STS1/VC3 CEP
+//      1: STS3/VC4 CEP
+//      2: STS12/VC4-4C CEP
+//      3: STS48/VC4-16C CEP  
+//      4: VC11/VC12 CEP  
+//      5: TU3 CEP   
+//      6: STS24/VC4-8C CEP  
+//      7: SAToP/CESoP  %% RW %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW Sticky *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW Control 
+// RTL Instant Name  : DebugPwSticky
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0024
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to debug PW modules
+// Width: 29
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [28] %% ClaPrbsErr  %% CLA output PRBS error %% WC %% 0x0 %% 0x0
+// Field: [27:20] %% Unused  %% HW debug only %% RC %% 0x0 %% 0x0
+// Field: [19] %% PwePrbsErr  %% PWE input PRBS error %% RC %% 0x0 %% 0x0
+// Field: [18] %% Unused  %% HW debug only %% RC %% 0x0 %% 0x0
+// Field: [17] %% PdaPrbsErr  %% High Order PDA output PRBS error %% RC %% 0x0 %% 0x0
+// Field: [16] %% PlaPrbsErr  %% High Order PLA input PRBS error %% RC %% 0x0 %% 0x0
+// Field: [15:13] %% Unused  %% HW debug only %% RC %% 0x0 %% 0x0
+// Field: [12] %% ClaPrbsSyn  %% CLA output PRBS sync %% WC %% 0x0 %% 0x0
+// Field: [11:4] %% Unused  %% HW debug only %% RC %% 0x0 %% 0x0
+// Field: [3] %% PwePrbsSyn %% PWE input PRBS sync %% RC %% 0x0 %% 0x0
+// Field: [2] %% Unused %% Unused %% RC %% 0x0 %% 0x0
+// Field: [1] %% PdaPrbsSyn %% High Order PDA output PRBS sync %% RC %% 0x0 %% 0x0
+// Field: [0] %% PlaPrbsSyn %% High Order PLA input PRBS sync %% RC %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW PLA Speed *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW PLA HO Speed 
+// RTL Instant Name  : DebugPwPlaSpeed
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0030
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to show PLA HO PW speed
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:0] %% PlaPwSpeed  %% PLA input PW speed %% RO %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW PDA Speed *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW PDA HO Speed 
+// RTL Instant Name  : DebugPwPdaHoSpeed
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0031
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to show PDA HO PW speed
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:0] %% PdaPwSpeed  %% PDA output PW speed %% RO %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW PWE Speed *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW PWE Speed 
+// RTL Instant Name  : DebugPwPweSpeed
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0034
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to show PWE PW speed
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:0] %% PwePwSpeed  %%  PWE input PW speed %% RO %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Debug PW CLA Speed *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug PW CLA Speed 
+// RTL Instant Name  : DebugPwClaLoSpeed
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0035
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to show PWE PW speed
+// Width: 32
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:0] %% ClaPwSpeed  %%  CLA output PW speed %% RO %% 0x0 %% 0x0
+// End:
+#####################################################################################
+#    **************
+#   * Chip Temperature Sticky *
+#    **************
+// Begin:
+// Register Full Name: Chip Temperature Sticky 
+// RTL Instant Name  : ChipTempSticky
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0020
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to sticky temperature
+// Width: 3
+// Register Type: {Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [2] %% ChipSlr2TempStk %% Chip SLR2 temperature %% WC %% 0x0 %% 0x0
+// Field: [1] %% ChipSlr1TempStk %% Chip SLR1 temperature %% WC %% 0x0 %% 0x0
+// Field: [0] %% ChipSlr0TempStk %% Chip SLR0 temperature %% WC %% 0x0 %% 0x0
+// End:
+
+
+#####################################################################################
+#    **************
+#   * Debug MAC LoopBack Control *
+#    **************
+// Begin:
+// Register Full Name: GLB Debug Mac Loopback Control 
+// RTL Instant Name  : DebugMacLoopControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0013
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure debug loopback MAC parameters
+// Width: 2
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [1] %% MacMroLoopOut %% Set 1 for Mac 10G/1G/100Fx Loop Out %% RW %% 0x0 %% 0x0
+// Field: [0] %% Mac40gLoopIn  %% Set 1 for Mac40gLoopIn  %% RW %% 0x0 %% 0x0
+// End:
+
+
+######################################################################################
+######################################################################################
+######################################################################################
+######################################################################################
+#    *********
+#   * ETH XFI 10G Debug dump
+#    *********
+######################################################################################
+######################################################################################
+######################################################################################
+######################################################################################
+######################################################################################
+
+######################################################################################
+#    *********
+#   * IgDump Control
+#    *********
+// Begin:
+// Register Full Name: IgDump Control
+// RTL Instant Name  : upen_pkdump_ctl
+// Address      : 0x091_0000
+// Formula      : {N/A}
+// Description  : This register is used to config control dump engine
+// Width: 32
+// Register Type: {Status} 
+//# Field: [Bit:Bit] %%  Name             %%  Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:16]    %%  Unused           %%  Unused                  %% R/W  %% 0x0      %% 0x0
+// Field: [15:12]    %%  Dump_Psize       %%  Dump packet size
+//                                            0x0 : dump full packet
+//                                            0x1 : dump 32 bytes header
+//                                            0x2 : dump 64 bytes header
+//                                            0x3 : dump 128 bytes header
+//                                            0x4 : dump 256 bytes header
+//                                            0x5 : dump 512 bytes header
+//                                            0x6 : dump 1024 bytes header
+//                                            other : dump 2048 bytes header
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// Field: [11:11]    %%  Dump_Keep        %%  Dump keep status
+//                                            0x0 : Clear Buffer when cpu write the register
+//                                            0x1 : Keep buffer and continous dump next
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// Field: [10:10]    %%  Dump_Roll        %%  Dump Roll buffer        
+//                                            0x0 : Stop dump when buffer full
+//                                            0x1 : Continuous dump when buffer full
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// Field: [09:08]    %%  Dump_Type        %%  Dump Type
+//                                            0x0 : Dump all packets
+//                                            0x1 : only dump error packets
+//                                            0x2 : only dump good packets
+//                                            0x3 : disable dump
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// Field: [07:04]    %%  Dump_Src         %%  Dump source
+//                                            0x0 : Dump packets
+//                                            0x1 : Dump output info
+//                                            0x2 : Dump input info
+//                                            other : Unused
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// Field: [03:00]    %%  Dump_Sel         %%  Dump Tx or Rx
+//                                            0x0 : Dump 10G tx port 1
+//                                            0x1 : Dump 10G tx port 2
+//                                            0x2 : Dump 10G rx port 1
+//                                            0x3 : Dump 10G rx port 2
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// End:
+
+######################################################################################
+#    *********
+#   * IgDump Status
+#    *********
+// Begin:
+// Register Full Name: IgDump Connection
+// RTL Instant Name  : upen_pkdump_sta
+// Address      : 0x091_0001
+// Formula      : {N/A}
+// Description  : This register is used to config control dump engine
+// Width: 32
+// Register Type: {Status} 
+//# Field: [Bit:Bit] %%  Name             %%  Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:04]    %%  Dump_Add         %%  Dump current address    %% R/W  %% 0x0      %% 0x0
+// Field: [03:00]    %%  Dump_Fsm         %%  Dump Fsm
+//                                            0x0: IDLE
+//                                            0x1: READY
+//                                            0x2: CLEAR
+//                                            0x3: START
+//                                            0x4: STOP
+//                                            0x5: DUMP
+//                                            0x6: WIN
+//                                            0x7: FAIL
+//                                            0x8: WEOP
+//                                            0xF: DONE
+//                                                                    %% RO   %% 0x0      %% 0x0
+// End:
+
+######################################################################################
+#    *********
+#   * IgDump Connection 
+#    *********
+// Begin:
+// Register Full Name: IgDump Connection
+// RTL Instant Name  : upen_pkdump_cid
+// Address      : 0x091_0002
+// Formula      : {N/A}
+// Description  : This register is used to config control dump engine
+// Width: 32
+// Register Type: {Status} 
+//# Field: [Bit:Bit] %%  Name             %%  Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]    %%  Dump_CID         %%  Dump Connection ID, depend Dump_Sel field
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// End:
+
+######################################################################################
+#    *********
+#   * IgDump Pkt counter
+#    *********
+// Begin:
+// Register Full Name: IgDump Pkt counter
+// RTL Instant Name  : upen_pkdump_pkc
+// Address      : 0x091_0004
+// Formula      : {N/A}
+// Description  : This register is used to config control dump engine
+// Width: 32
+// Register Type: {Status} 
+//# Field: [Bit:Bit] %%  Name             %%  Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]    %%  Dump_Pkts        %%  Dump packet counters
+//                                                                    %% R/W  %% 0x0      %% 0x0
+// End:
+
+######################################################################################
+#    *********
+#   * IgDump Pkt Information
+#    *********
+// Begin:
+// Register Full Name: IgDump Pkt Information
+// RTL Instant Name  : upen_pkdump_pks
+// Address      : 0x091_0100
+// Formula      : Address + $pkt_id
+// Where        : {$pkt_id (0-255): packet_id}
+// Description  : This register is used to read packet information, packet_id equa 0 is first packet dump.
+//              : each address corresspond for 64 bits data (8 bytes)
+//              : number of address Pkt_info_NAdd = Pkt_Info_Len / 8
+//              : location to read data packet dump is {Pkt_info_SAdd,Pkt_info_SAdd+Pkt_info_NAdd}.
+// Width: 32 
+// Register Type: {Config} 
+//# Field: [Bit:Bit] %%  Name             %% Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:16]    %%  Pkt_Info_Len     %% Packet length
+//                                           0x0: zero byte valid
+//                                           0x1: one byte valid
+//                                           0x2: two byte valid, ...
+//                                                                   %% RO   %% 0x0      %% 0x0
+// Field: [15:13]    %%  Unused           %%  Unused                 %% RO   %% 0x0      %% 0x0
+// Field: [12:12]    %%  Pkt_Info_Typ     %% Packet infor type
+//                                           0x0: Packet      
+//                                           0x1: Word
+//                                                                   %% RO   %% 0x0      %% 0x0
+// Field: [11:11]    %%  Unused           %%  Unused                 %% RO   %% 0x0      %% 0x0
+// Field: [10:00]    %%  Pkt_Info_SAdd    %% Start address of packet dump
+//                                                                   %% RO   %% 0x0      %% 0x0
+// End:
+
+######################################################################################
+#    *********
+#   * IgDump Pkt Data
+#    *********
+// Begin:
+// Register Full Name: IgDump Pkt Data
+// RTL Instant Name  : upen_pkdump_pkd
+// Address      : 0x091_0400
+// Formula      : Address + $add_id*4 + dword_id
+// Where        : {$add_id (0-1023): add_id} %% {$dword_id(0-3)}
+// Description  : This register is used to read packet data, each address corresspond 2xdword (64 bits) data
+// Width: 32 
+// Register Type: {Config} 
+//# Field: [Bit:Bit] %%  Name             %% Description             %% Type %% SW_Reset %% HW_Reset
+// Field: [31:00]    %%  Pkt_Dump_Data    %% Packet data, 
+//                                           dword_id = 0 ~ data[127:96]
+//                                           dword_id = 1 ~ data[95:64]
+//                                           dword_id = 2 ~ data[63:32]
+//                                           dword_id = 3 ~ data[31:00]
+//                                                                   %% RO   %% 0x0      %% 0x0
+// End:
+#####################################################################################
+# **************
+# * Global OCN Clock Squelching Control *
+# **************
+// Begin:
+// Register Full Name: GLB OCN Clock Squelching Control 
+// RTL Instant Name  : GlbOCNClkSquelControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0xF00047
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure OCN Clock Squelching 
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31] %% OCNSchelEn2 %% Enable 8K output 
+//      1: Enable 8K refout2
+//      0: Disable 8K refout 2 %% RW %% 0x0 %% 0x1
+// Field: [30] %% OCNSchelEn1 %% Enable 8K output 
+//      1: Enable 8K refout1
+//      0: Disable 8K refout 1 %% RW %% 0x0 %% 0x1
+// Field: [23:20] %% OCNSchelPortSel2 %% Select one of 9 OCN ports
+//      0: Select OC192 port
+//      1-8: Select one of OC48/12/3 ports %% RW %% 0x0 %% 0x0
+// Field: [19:16] %% OCNSchelPortSel1 %% Select one of 9 OCN ports
+//      0: Select OC192 port
+//      1-8: Select one of OC48/12/3 ports %% RW %% 0x0 %% 0x0
+// End:
+#####################################################################################
+# **************
+# * Global 1G Ethernet Clock Squelching Control *
+# **************
+// Begin:
+// Register Full Name: GLB Eth1G Clock Squelching Control 
+// RTL Instant Name  : GlbEth1GClkSquelControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0011
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure debug PW parameters
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:16] %% EthGeLinkDownSchelEn %% Each Bit represent for each ETH port, value each bit is as below
+//      1: Disable 8Khz refout when GE link down occur
+//      0: Enable 8Khz refout when GE link down occur  %% RW %% 0x0 %% 0x0
+// Field: [15:0] %% EthGeExcessErrRateSchelEn  %% Each Bit represent for each ETH port, value each bit is as below
+//      1: Disable 8Khz refout when GE Excessive Error Rate occur
+//      0: Enable 8Khz refout when GE Excessive Error Rate occur  %% RW %% 0x0 %% 0x0
+// End:
+
+#####################################################################################
+# **************
+# * Global 10G Ethernet Clock Squelching Control *
+# **************
+// Begin:
+// Register Full Name: GLB Eth10G Clock Squelching Control 
+// RTL Instant Name  : GlbEth10GClkSquelControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0x00_0012
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure debug PW parameters
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [31:30] %% RxXfi11PtchNum  %% Number of PTCH bytes coming receive from XFI#11 ports
+//      2: 2 bytes PTCH
+//      1: 1 byte PTCH
+//      0: Not PTCH  %% RW %% 0x0 %% 0x0
+// Field: [29:28] %% RxXfi10PtchNum  %% Number of PTCH bytes coming receive from XFI#10 ports
+//      2: 2 bytes PTCH
+//      1: 1 byte PTCH
+//      0: Not PTCH  %% RW %% 0x0 %% 0x0
+// Field: [27:26] %% TxXfi11PtchNum  %% Number of PTCH bytes transmit to XFI#11 ports
+//      2: 2 bytes PTCH
+//      1: 1 byte PTCH
+//      0: Not PTCH  %% RW %% 0x0 %% 0x0
+// Field: [25:24] %% TxXfi10PtchNum  %% Number of PTCH bytes transmit to XFI#10 ports
+//      2: 2 bytes PTCH
+//      1: 1 byte PTCH
+//      0: Not PTCH  %% RW %% 0x0 %% 0x0
+// Field: [7:6] %% TenGeLocalFaultSchelEn  %% Each Bit represent for each TenGe port0 and port8, value each bit is as below
+//      1: Disable 8Khz refout when TenGe Local Fault occur
+//      0: Enable 8Khz refout when TenGe Local Fault occur  %% RW %% 0x0 %% 0x0
+// Field: [5:4] %% TenGeRemoteFaultSchelEn  %% Each Bit represent for each TenGe port0 and port8, value each bit is as below
+//      1: Disable 8Khz refout when TenGe Remote Fault occur
+//      0: Enable 8Khz refout when TenGe Remote Fault occur  %% RW %% 0x0 %% 0x0
+// Field: [3:2] %% TenGeLossDataSyncSchelEn  %% Each Bit represent for each TenGe port0 and port8, value each bit is as below
+//      1: Disable 8Khz refout when TenGe Loss of Data Sync occur
+//      0: Enable 8Khz refout when TenGe Loss of Data Sync occur  %% RW %% 0x0 %% 0x0
+// Field: [1:0] %% TenGeExcessErrRateSchelEn  %% Each Bit represent for each TenGe port0 and port8, value each bit is as below
+//      1: Disable 8Khz refout when TenGe Excessive Error Rate occur
+//      0: Enable 8Khz refout when TenGe Excessive Error Rate occur  %% RW %% 0x0 %% 0x0
+// End:
+#####################################################################################
+# **************
+# * Global PDH Clock Squelching Control *
+# **************
+// Begin:
+// Register Full Name: GLB PDH Clock Squelching Control 
+// RTL Instant Name  : GlbPDHClkSquelControl
+//# {FunctionName,SubFunction_InstantName_Description}
+//# RTL Instant Name and Full Name MUST be unique within a register description file
+// Address      : 0xF0004A
+//# Address is relative address, will be sum with Base_Address for each function block
+// Formula      : {N/A}
+// Description  : This register is used to configure PDH Clock Squelching 
+// Width: 32
+// Register Type: {Config|Status}
+//# Field: [Bit:Bit] %%  Name %% Description %% Type %% Reset %% Default
+// Field: [23:20] %% PDHSchelEn2 %% Enable 8K output slaver for 4 slices, bit0 corresspond for slice1
+//      1: Enable 8K refout2
+//      0: Disable 8K refout 2 %% RW %% 0x0 %% 0x1
+// Field: [19:16] %% PDHSchelEn1 %% Enable 8K output master for 4 slices, bit0 corresspond for slice1
+//      1: Enable 8K refout1
+//      0: Disable 8K refout 1 %% RW %% 0x0 %% 0x1
+//  Fieldx: [15:08]    %% xfi_rsp1_Tx_en	   %% Set 1 to enable Tx for RSP1 and mux select, bit8->Port1,bit9->Port2...  %% R/W          %% 0x0   %% 0x0
+//  Fieldx: [07:00]    %% xfi_rsp0_Tx_en	   %% Set 1 to enable Tx for RSP0 and mux select, bit0->Port1,bit1->Port2...  %% R/W          %% 0x0   %% 0x0
+// End:
+
+
+
+#####################################################################################
+# **************
+# * Device init sequence
+# 1. Reset :  FPGA DDRx soft reset  (0x00f00005) 
+# 2. Check fpga status : Check FPGA system alarm (0x00f00050)
+# 3. Set default path
+#  
+# **************

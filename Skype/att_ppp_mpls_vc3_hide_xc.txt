@@ -1,0 +1,56 @@
+=================== CFG ATT MPLS PPP =======================
+device init
+serdes mode 5 stm16
+sdh line rate 5 stm16
+sdh line mode 5 sdh
+xc vc connect vc3.5.1.1-5.16.3 vc3.27.1.1-27.16.3 two-way
+encap channel create 257-304 ppp
+encap channel bind 257-304 vc3.27.1.1-27.16.3
+encap hdlc scramble disable 257-304
+encap hdlc link pdu 257-304 any
+pw create ppp 257-304
+show pw ppp.257-304
+pw hdlc payloadtype ppp.257-304 full
+pw psn ppp.257-304 mpls
+show pw psn mpls ppp.257-304
+eth flow create 1-48
+pw ethflow ppp.257-304 1-48
+pw ethport ppp.257-304 1
+pw enable ppp.257-304
+
+=================== CFG ATT MPLS PPP HIDE XC ===============
+./apps/ep_app/epapp -s 6a210081 -w "ff/ff/ff f.f.f"
+hal debug dis
+device show readwrite dis dis
+device init
+debug ciena mro xc hide direct
+serdes mode 5 stm16
+sdh line rate 5 stm16
+sdh line mode 5 sdh
+sdh map aug16.5.1 4xaug4s
+sdh map aug4.5.1-5.4 4xaug1s
+sdh map aug1.5.1-5.16 3xvc3s
+sdh map vc3.5.1.1-5.16.3 c3
+sdh line loopback 5 local
+serdes loopback 5 local
+vcg create 1 vcat vc3
+vcg member provision 1 vc3.5.1.1
+encap channel create 257-304 ppp
+encap channel bind 257-304 vc3.27.1.1-27.16.3
+encap hdlc scramble disable 257-304
+encap hdlc link pdu 257-304 any
+pw create ppp 257-304
+show pw ppp.257-304
+pw hdlc payloadtype ppp.257-304 full
+pw psn ppp.257-304 mpls
+show pw psn mpls ppp.257-304
+eth flow create 1-48
+pw ethflow ppp.257-304 1-48
+pw ethport ppp.257-304 1
+pw enable ppp.257-304
+show xc vc dest vc3.5.1.1 
+show vcg 1
+show vcg source member 1
+
+
+
